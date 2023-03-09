@@ -1,7 +1,7 @@
 
 
 let baseUrlLocal = 'http://localhost:3000/'
-const baseUrlHeroku = 'https://flowmanager.ro/'
+const baseUrlHeroku = 'https://www.flowmanager.ro/'
 
 const currentUrl = window.location.href
 if (currentUrl.slice(0, 22) === baseUrlLocal) {

@@ -4,7 +4,7 @@ const redRow = document.querySelector('.reducere');
 const reducereInput = redRow.querySelector('input');
 
 let baseUrlLocal = 'http://localhost:3000/'
-const baseUrlHeroku = 'https://flowmanager.ro/'
+const baseUrlHeroku = 'https://www.flowmanager.ro/'
 
 
 const currentUrl = window.location.href
