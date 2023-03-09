@@ -23,7 +23,7 @@ module.exports.addIngTva = async (req, res, next) => {
   const date = nir.data
     .toLocaleDateString("en-GB", options)
     .replace(/\//g, "-");
-  // console.log(nir.produse);
+
 
   const promises = nir.produse.map((el) => {
     return Ingredient.findOneAndUpdate(
@@ -397,7 +397,6 @@ module.exports.addInventar = async (req, res, next) => {
     // actualizăm cantitatea ingredientului în magazia sursă
     ingredientSursa.cantitate -= cantitate;
     await ingredientSursa.save();
-    console.log(ingredientSursa);
 
     // căutăm ingredientul în magazia destinatară
     let ingredientDestinatar = await Ingredient.findOne({
@@ -424,11 +423,10 @@ module.exports.addInventar = async (req, res, next) => {
     }
 
     await ingredientDestinatar.save();
-    // console.log(ingredientDestinatar);
+
   }
   const bon = new Bon(req.body.bon);
   bon.locatie = locatie._id;
-  console.log(req.body.bon);
   bon.save();
   return res.redirect(`/ingredient/bon/Bon-${bon.index}-din-${data}`);
 };
@@ -447,7 +445,6 @@ module.exports.bonTransfer = async (req, res, next) => {
       path: "gestSend",
       select: "nume",
     });
-  console.log(bon);
   const locatie = req.user;
   const firma = await Locatie.findById(locatie._id);
   const userLogat = req.user.nestedUsers.find(
