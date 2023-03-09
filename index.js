@@ -93,23 +93,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api", apiRoutes);
-app.use("/produs", produsRoutes);
-app.use("/ingredient", addIng);
-app.use("/rapoarte", rapoarte);
-app.use("/locatie", locatie);
-app.use("/comanda", comanda);
-
-app.get("/vanzare", isLoggedIn, isCasier, (req, res, next) => {
-  res.render("vanzare");
-});
-
-app.get("/", async (req, res, next) => {
-  res.render("locatie/login");
-});
-
-
-
 
 
 const scriptSrcUrls = [
@@ -169,10 +152,31 @@ app.use(
   })
 );
 
+
+
+
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'https://www.flowmanager.ro');
   next();
 });
+
+
+app.use("/api", apiRoutes);
+app.use("/produs", produsRoutes);
+app.use("/ingredient", addIng);
+app.use("/rapoarte", rapoarte);
+app.use("/locatie", locatie);
+app.use("/comanda", comanda);
+
+app.get("/vanzare", isLoggedIn, isCasier, (req, res, next) => {
+  res.render("vanzare");
+});
+
+app.get("/", async (req, res, next) => {
+  res.render("locatie/login");
+});
+
+
 
 // app.get('/locatie/register', async (req, res, next) => {
 //   const pass = 'true'
