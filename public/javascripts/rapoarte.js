@@ -1,5 +1,15 @@
-const urlLocal = 'http://localhost:3000/rapoarte/api'
-const urlLocProduse = 'http://localhost:3000/rapoarte/apiNota'
+let baseUrlLocal = 'http://localhost:3000/'
+const baseUrlHeroku = 'https://flowmanager.ro/'
+
+const currentUrl = window.location.href
+if (currentUrl.slice(0, 22) === baseUrlLocal) {
+    baseUrlLocal = baseUrlLocal
+} else (
+    baseUrlLocal = baseUrlHeroku
+)
+
+const urlLocal = `${baseUrlLocal}rapoarte/api`
+const urlLocProduse = `${baseUrlLocal}rapoarte/apiNota`
 const filter = document.querySelector('#data')
 const bonTable = document.querySelector('.bonTable')
 const prodTable = document.querySelector('.prodTable')

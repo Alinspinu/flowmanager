@@ -1,10 +1,21 @@
-const baseUrl = "http://localhost:3000";
+
+
+let baseUrlLocal = 'http://localhost:3000/'
+const baseUrlHeroku = 'https://flowmanager.ro/'
+
+const currentUrl = window.location.href
+if (currentUrl.slice(0, 22) === baseUrlLocal) {
+    baseUrlLocal = baseUrlLocal
+} else (
+    baseUrlLocal = baseUrlHeroku
+)
+
 const since = Date.now() - 5000; // only retrieve orders from the last 5 seconds
-const url = `${baseUrl}/comanda/barSend?since=${since}`;
-const urlLocalSend = `${baseUrl}/api/orderDone`;
+const url = `${baseUrlLocal}comanda/barSend?since=${since}`;
+const urlLocalSend = `${baseUrlLocal}api/orderDone`;
 const eventSource = new EventSource(url);
 
-const getOrdersUrl = `${baseUrl}/comanda/netBarista`;
+const getOrdersUrl = `${baseUrlLocal}comanda/netBarista`;
 fetch(getOrdersUrl)
     .then((res) => res.json())
     .then(orders => {
@@ -13,7 +24,7 @@ fetch(getOrdersUrl)
         }
     });
 
-const dingSound = new Audio(`${baseUrl}/sounds/ding.mp3`);
+const dingSound = new Audio(`${baseUrlLocal}sounds/ding.mp3`);
 
 
 //MANAGE ORDERS WHEN ARE ARIVE FROM DB

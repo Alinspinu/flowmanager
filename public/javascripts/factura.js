@@ -1,8 +1,17 @@
 
 const suggBoxFurnizor = document.querySelector("#search-res");
 const furnImput = document.querySelector("#numeClient");
-const baseUrl = 'http://localhost:3000/'
-const clientSend = `${baseUrl}api/clientSearch`
+let baseUrlLocal = 'http://localhost:3000/'
+const baseUrlHeroku = 'https://flowmanager.ro/'
+
+const currentUrl = window.location.href
+if (currentUrl.slice(0, 22) === baseUrlLocal) {
+    baseUrlLocal = baseUrlLocal
+} else (
+    baseUrlLocal = baseUrlHeroku
+)
+
+const clientSend = `${baseUrlLocal}api/clientSearch`
 
 
 

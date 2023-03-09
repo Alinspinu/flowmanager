@@ -1,7 +1,17 @@
-const urlLocal = "http://localhost:3000/api/ingSearch";
-const furUrllocal = "http://localhost:3000/api/furSearch";
-const ingUrllocal = "http://localhost:3000/api/ingSearchFaraTva";
-const url = "https://infocui.ro/system/api/data";
+let baseUrlLocal = 'http://localhost:3000/'
+const baseUrlHeroku = 'https://flowmanager.ro/'
+
+const currentUrl = window.location.href
+if (currentUrl.slice(0, 22) === baseUrlLocal) {
+    baseUrlLocal = baseUrlLocal
+} else (
+    baseUrlLocal = baseUrlHeroku
+)
+
+const urlLocal = `${baseUrlLocal}api/ingSearch`;
+const furUrllocal = `${baseUrlLocal}api/furSearch`;
+const ingUrllocal = `${baseUrlLocal}api/ingSearchFaraTva`;
+
 
 const addRowPrdBtn = document.querySelector("#addPrd");
 const addIngBtn = document.querySelector(".addIngBtn");

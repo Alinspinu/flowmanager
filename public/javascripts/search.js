@@ -1,5 +1,4 @@
 const wrapper = document.querySelector("#search");
-
 const bill = document.querySelector(".bill");
 const nota = document.querySelector(".nota");
 const nto = document.querySelector(".nto");
@@ -13,9 +12,21 @@ const addCasa = document.querySelector("#addCasa");
 const redCasa = document.querySelector("#redCasa");
 const addCif = document.querySelector("#addCifBtn");
 const addRo = document.querySelector(".ro");
-const urlLocalSend = "http://localhost:3000/api/notaApi";
-const urlLocal = "http://localhost:3000/api/sendCat";
-const url = "http://localhost:3000/rapoarte/apiTotal";
+
+let baseUrlLocal = 'http://localhost:3000/'
+const baseUrlHeroku = 'https://flowmanager.ro/'
+
+const currentUrl = window.location.href
+if (currentUrl.slice(0, 22) === baseUrlLocal) {
+  baseUrlLocal = baseUrlLocal
+} else (
+  baseUrlLocal = baseUrlHeroku
+)
+
+
+const urlLocalSend = `${baseUrlLocal}api/notaApi`;
+const urlLocal = `${baseUrlLocal}api/sendCat`;
+const url = `${baseUrlLocal}rapoarte/apiTotal`;
 
 const navTot = document.querySelector(".card-cash");
 const navCash = document.querySelector(".nav-cash");

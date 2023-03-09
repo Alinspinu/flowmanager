@@ -1,6 +1,15 @@
-const urlLocal = "http://localhost:3000/api/ingSearch";
+let baseUrlLocal = 'http://localhost:3000/'
+const baseUrlHeroku = 'https://flowmanager.ro/'
+
+const currentUrl = window.location.href
+if (currentUrl.slice(0, 22) === baseUrlLocal) {
+    baseUrlLocal = baseUrlLocal
+} else (
+    baseUrlLocal = baseUrlHeroku
+)
 
 
+const urlLocal = `${baseUrlLocal}api/ingSearch`;
 const input1 = document.querySelector("#cauta2");
 const suggBox2 = document.querySelector("#searchIngGst");
 const addIngBtn = document.querySelector(".addIngBtn");

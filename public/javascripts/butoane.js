@@ -2,8 +2,20 @@ const wrapper = document.querySelector("#search")
 const bill = document.querySelector('.bill')
 const redRow = document.querySelector('.reducere');
 const reducereInput = redRow.querySelector('input');
+
+let baseUrlLocal = 'http://localhost:3000/'
+const baseUrlHeroku = 'https://flowmanager.ro/'
+
+
+const currentUrl = window.location.href
+if (currentUrl.slice(0, 22) === baseUrlLocal) {
+    baseUrlLocal = baseUrlLocal
+} else (
+    baseUrlLocal = baseUrlHeroku
+)
+
 // const btns = wrapper.querySelectorAll('div')
-const urlLocal = 'http://localhost:3000/api/sendCat'
+const urlLocal = `${baseUrlLocal}api/sendCat`
 
 
 

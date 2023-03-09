@@ -5,7 +5,17 @@ const suggBox = document.querySelector("#searchReteta");
 const pretMp = document.querySelector("#pretIng");
 const addProdusBtn = document.querySelector("#addProdusBtn")
 
-const tvaInfoUrl = "http://localhost:3000/api/tvaInfo"
+let baseUrlLocal = 'http://localhost:3000/'
+const baseUrlHeroku = 'https://flowmanager.ro/'
+
+const currentUrl = window.location.href
+if (currentUrl.slice(0, 22) === baseUrlLocal) {
+    baseUrlLocal = baseUrlLocal
+} else (
+    baseUrlLocal = baseUrlHeroku
+)
+
+const tvaInfoUrl = `${baseUrlLocal}api/tvaInfo`
 
 let urlLocal = ''
 fetch(tvaInfoUrl)
@@ -13,9 +23,9 @@ fetch(tvaInfoUrl)
     .then((data) => {
         console.log(data)
         if (data === 'neplatitorTva') {
-            urlLocal = "http://localhost:3000/api/ingSearchFaraTva";
+            urlLocal = `${baseUrlLocal}api/ingSearchFaraTva`;
         } else if (data === 'platitorTva') {
-            urlLocal = "http://localhost:3000/api/ingSearch"
+            urlLocal = `${baseUrlLocal}api/ingSearch`;
         }
     })
 

@@ -28,8 +28,8 @@ const { isAdmin, isLoggedIn, isUser, isCasier } = require("./middleware");
 
 mongoose.set("strictQuery", false);
 
-const dbUrl = "mongodb+srv://Alin:espsOCn7sllc@cluster0.m2r9yun.mongodb.net/?retryWrites=true&w=majority";
-// process.env.MONGO_URL_ALINZ
+const dbUrl = process.env.MONGO_URL_AZURE
+
 mongoose.connect(dbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -61,7 +61,7 @@ const sessionConfig = {
     autoRemove: "interval",
     autoRemoveInterval: 10,
   }),
-  secret: process.env.SECRET || "HlA71dvjIigafyX^N0CpA4PK*4$VXl8",
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
