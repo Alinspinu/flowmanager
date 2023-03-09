@@ -1,0 +1,67 @@
+<% layout('layouts/boilerplate') %>
+
+    <div class="container-fluid mt-5">
+        <h1 class="text-center">Modifica Produs</h1>
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form action="/produs/modifica/<%=produs._id%>?_method=PUT" method="POST" novalidate
+                    class="validated-form">
+                    <label class="fs-5" for="nume">Denumire</label>
+                    <div class="input-group mb-3">
+                        <input type="text" name="produs[nume]" id="nume" class="form-control"
+                            placeholder="Denumire Produs" aria-describedby="basic-addon1" value="<%=produs.nume%>"
+                            required>
+                    </div>
+                    <label class="fs-5" for="pret">Preț</label>
+                    <div class="input-group mb-3">
+                        <input type="text" name="produs[pret]" id="pret" class="form-control" placeholder="Pret"
+                            aria-describedby="basic-addon1" value="<%=produs.pret%>" required>
+                    </div>
+                    <label class="fs-5" for="departament">Departament</label>
+                    <div class="input-group mb-3">
+                        <select class="form-select" name="produs[departament]" aria-label="Default select example"
+                            placeholder="departament" required>
+                            <option value="1">Marfuri</option>
+                            <option value="2" selected>Preparate</option>
+                            <option value="3">Servicii</option>
+                            <option value="4">Tips</option>
+                        </select>
+                        <% if(session.passport.user.platitorTva){%>
+                            <select class="form-select" name="produs[cotaTva]" aria-label="Default select example"
+                                required>
+                                <option value="">Alege Cota Tva</option>
+                                <option value="19">19%</option>
+                                <option value="9">9%</option>
+                                <option value="5">5%</option>
+                            </select>
+                            <% } %>
+                    </div>
+
+                    <span style="font-size:20px; margin: 0 0 0 270px;">Rețetă</span>
+                    <div class="row mt-3">
+                        <span class="col-lg-4">Denumire</span>
+                        <span class="col-lg-4">Cantitate</span>
+                        <span class="col-lg-4">Pret</span>
+                    </div>
+                    <% produs.ingrediente.forEach(function(el) { %>
+                        <div class="input-group mb-3">
+                            <input type="text" name="ingrediente[nume]" class="form-control"
+                                aria-describedby="basic-addon1" value="<%=el.nume%>" required>
+                            <input type="number" name="ingrediente[cantitate]" class="form-control"
+                                aria-describedby="basic-addon1" value="<%=el.cantitate%>" required>
+                            <input type="number" name="ingrediente[pret]" class="form-control"
+                                aria-describedby="basic-addon1" value="<%=el.pret%>" readonly="true" required>
+                        </div>
+                        <% }) %>
+
+                            <button class="btn btn-lg btn-info">Modifică</button>
+                </form>
+
+                <form action="/produs/modifica/<%=produs._id%>?_method=DELETE" method="POST">
+                    <button class="btn btn-lg btn-danger mt-4">Sterge</button>
+                </form>
+            </div>
+
+
+        </div>
+    </div>

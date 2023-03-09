@@ -1,0 +1,77 @@
+
+.filterHeader{
+    margin: 5px 0 5px 0;
+    max-width: 100%;
+    /* background-color: rgba(144, 224, 239, 0.4); */
+    border-radius: 4px;
+ 
+}
+
+ .filterHeader button{
+    margin-left: 10px;
+ }
+
+.filterHeader select{
+    width: 100%
+    
+}
+
+.filterHeader label{
+    display: block;
+}
+
+.filterHeaderWrapper {
+    background-color: rgba(144, 224, 239, 0.4);
+    border-radius: 4px;
+}
+
+
+input[type="date"]{
+    border-radius: 4px;
+    margin: 0 0 0 0;
+    border: none;
+    width: 100%;
+    box-shadow: 0 1px 5px 3px rgba(0,0,0,0.12);
+}
+
+.bonTable{
+    border-radius: 8px;
+    /* box-shadow: 0 1px 5px 3px rgba(0,0,0,0.12); */
+}
+
+.wrapperTable{
+    border-radius: 8px;
+    background-color: aliceblue;
+    max-width: 100%;
+}
+
+.clsBtn{
+    width: 20px;
+    /* border: 0.5px solid black; */
+    text-align: center;
+    border-radius: 5px;
+    background-color: #90e0ef;
+    font-size: 40px;
+    box-shadow: 0 1px 5px 3px rgba(0,0,0,0.12);
+}
+.clsBtn:hover{
+    cursor: pointer;
+}
+
+.linie{
+    background-color: #c0c0c0;
+    cursor: pointer;
+    border-radius: 4px;
+    border-bottom: 0.5px solid black;
+    /* box-shadow: 0 1px 5px 3px rgba(0,0,0,0.12); */
+}
+.bon:hover{
+    background-color:#ffbf69 ;
+}
+/* .liniePrd{
+   
+} */
+
+.color1{
+    background-color: #90e0ef;   
+}

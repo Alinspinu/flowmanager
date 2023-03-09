@@ -1,0 +1,49 @@
+<% layout('layouts/boilerplate') %>
+
+
+
+    <div class="card col-lg-3 offset-lg-4" style="width: 26rem; padding:8px 8px 8px 8px; margin-top: 50px;">
+        <form action="/locatie/user/<%=user.username%>?_method=PUT" method="POST" novalidate class="validated-form">
+            <h3 class="text-center mb-4">Modifică Utilizator</h3>
+            <div class="">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" name="user[username]" class="form-control" id="username" value="<%=user.username%>"
+                    required>
+            </div>
+            <div class="">
+                <label for="email" class="form-label ">Email</label>
+                <input type="text" name="user[email]" class="form-control" id="email"
+                    value="<%=user.email || 'loser'%>">
+            </div>
+            <div class="">
+                <label for="nume" class="form-label">Nume Complet</label>
+                <input type="text" class="form-control" name="user[nume]" id="nume" aria-describedby="locatie"
+                    value="<%=user.nume%>" required>
+            </div>
+            <div class="">
+                <label for="admin" class="form-label">Alege Funcția</label>
+                <select name="user[admin]" id="admin" class="form-select mb-3" required>
+                    <option value="0">Casier</option>
+                    <option value="1">Admin</option>
+                    <option value="2">Barista</option>
+                    <option value="3">Bucătar</option>
+                </select>
+            </div>
+            <div class="">
+                <label for="password" class="form-label">Parolă</label>
+                <input type="password" name="user[parola]" class="form-control" id="password" required>
+            </div>
+            <div class="">
+                <label for="confirmPassowrd" class="form-label ">Confirmă Parolă</label>
+                <input type="password" name="user[confirmPassword]" class="form-control" id="confirmPassword" required>
+            </div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary mt-2">Modifică</button>
+            </div>
+        </form>
+        <form action="/locatie/user/<%=user.username%>?_method=DELETE" method="POST">
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-danger mt-2">Șterge</button>
+            </div>
+        </form>
+    </div>

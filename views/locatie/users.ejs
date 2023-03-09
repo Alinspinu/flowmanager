@@ -1,0 +1,101 @@
+<% layout('layouts/boilerplate') %>
+    <style>
+        .card li:hover {
+            cursor: pointer;
+            background-color: #caf0f8;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 px-0">
+                    <div class="card mt-5" style="width: 26rem; padding:8px 8px 8px 8px;">
+                        <h3 class="text-center mt-4">Utilizatori <%=locatie.username%>
+                        </h3>
+                        <ul class="list-group list-group-flush">
+                            <% users.forEach(function(el, i){%>
+                                <li class="list-group-item">
+                                    <a class="link" href="/locatie/user/<%=el.username%>">
+                                        <%=i+1%>.&nbsp; <%=String(el.nume).charAt(0).toUpperCase() +
+                                                String(el.nume).slice(1)%>
+                                                &nbsp;| <%=el.functie%>
+                                    </a>
+                                </li>
+                                <% }) %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-6">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 px-0">
+                    <div class="card mt-5" style="width: 26rem; padding:8px 8px 8px 8px;">
+                        <h3 class="text-center mt-4">Adaugă/Modifică datele firmei</h3>
+                        <form action="/locatie/addFirma" method="POST">
+
+                            <div class="mt-2">
+                                <label for="nume" class="form-label">Denumire Societate</label>
+                                <input type="text" class="form-control" name="firma[nume]" id="nume"
+                                    aria-describedby="locatie" value="" placeholder="">
+                            </div>
+                            <div class="">
+                                <label for="cif" class="form-label">CIF</label>
+                                <input type="text" name="firma[cif]" class="form-control" id="cif" placeholder="">
+                            </div>
+                            <div class="">
+                                <label for="rc" class="form-label">Nr Registrul Comerțului</label>
+                                <input type="text" name="firma[rc]" class="form-control" id="rc">
+                            </div>
+                            <div class="">
+                                <label for="banca" class="form-label">Banca</label>
+                                <input type="text" name="firma[banca][nume]" class="form-control" id="banca">
+                            </div>
+                            <div class="">
+                                <label for="cont" class="form-label">Cont</label>
+                                <input type="text" name="firma[banca][cont]" class="form-control" id="cont">
+                            </div>
+                            <div class="">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="text" name="firma[email]" class="form-control" id="email">
+                            </div>
+                            <div class="">
+                                <label for="telefon" class="form-label">Telefon</label>
+                                <input type="text" name="firma[telefon]" class="form-control" id="telefon">
+                            </div>
+                            <div class="">
+                                <label for="adresa" class="form-label">Adresa Sediu Social</label>
+                                <textarea type="text" name="firma[adresa]" class="form-control" id="adresa"></textarea>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-warning my-2">Adauga</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+    <script>
+        const listItem = document.querySelectorAll(".list-group-item");
+        listItem.forEach(function (el) {
+            const link = el.querySelector(".link");
+            el.addEventListener("click", function () {
+                link.click();
+            });
+        })
+
+
+
+    </script>

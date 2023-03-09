@@ -1,0 +1,140 @@
+<% if(session.userId){ %>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse " id="navbarNavAltMarkup">
+        <div class="navbar-nav ms-auto ">
+          <% if(session.userAdmin===1 || session.userAdmin===0 ) { %>
+            <a class="me-5" aria-current="page" href="/rapoarte/factura">
+              Factură
+            </a>
+            <a class="me-5" aria-current="page" id="brand" href="/vanzare">
+              Vanzare
+            </a>
+
+            <% } %>
+
+              <% if(session.userAdmin===3) { %>
+                <a href="/comanda/bucatarie" class="nav-link" style="margin-right:500px;">Comenzi Live</a>
+
+                <% } %>
+                  <% if(session.userAdmin===2) { %>
+                    <a href="/comanda/barista" class="nav-link" style="margin-right:500px;">Comenzi Live</a>
+
+                    <% } %>
+
+
+                      <div class="nav-total-wrapper">
+                        <% if(session.userAdmin===1) { %>
+                          <li class="nav-item dropdown" style="list-style: none;">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                              aria-expanded="false">
+                              <i class="bi bi-card-list fs-4"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" href="/produs/nomenclator">Nomenclator</a></li>
+                              <li><a class="dropdown-item" href="/ingredient/stoc">Stoc Live</a></li>
+                              <li><a class="dropdown-item" href="/rapoarte/rap">Note</a></li>
+                              <li><a href="/comanda/barista" class="dropdown-item">Comenzi Live Barista</a></li>
+                              <li><a href="/comanda/bucatarie" class="dropdown-item">Comenzi Live Bucatarie</a></li>
+                            </ul>
+                          </li>
+                          <li class="nav-item dropdown" style="list-style: none; margin:0 10px 0 10px;">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                              aria-expanded="false">
+                              <i class="bi bi-plus-circle-dotted fs-4"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" href="/produs/addFurnizor">Adaugă Furnizor</a></li>
+                              <% if(session.passport.user.platitorTva) {%>
+                                <li><a class="dropdown-item" href="/produs/addNir">Adaugă Nir</a></li>
+                                <% } else if (!session.passport.user.platitorTva){ %>
+                                  <li><a class="dropdown-item" href="/produs/addNirFaraTva">Adaugă Nir</a></li>
+                                  <% } %>
+                                    <li>
+                                      <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="/produs/transfer">Transfer Între Gestiuni</a>
+                                    </li>
+                                    <li>
+                                      <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="/produs/addCategorie">Adauga Categorii de
+                                        Produse</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="/produs/addProdus">Adauga Produse în Meniu</a>
+                                    </li>
+                            </ul>
+                          </li>
+                          <% } %>
+                            <li class="nav-item dropdown center" style="list-style: none; margin-right:100px;">
+                              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-display="static"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person fs-2"></i>
+                              </a>
+                              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                                <%if(session.userAdmin===3) {%>
+                                  <li><a class="dropdown-item" href="/comanda/istoricBuc">Istoric Comenzi</a>
+                                  </li>
+                                  <hr class="dropdown-divider">
+                                  <% } %>
+                                    <%if(session.userAdmin===2) {%>
+                                      <li><a class="dropdown-item" href="/comanda/istoricBarista">Istoric Comenzi</a>
+                                      </li>
+                                      <hr class="dropdown-divider">
+                                      <% } %>
+                                        <%if(session.userAdmin==0) {%>
+                                          <li><a class="dropdown-item" href="/rapoarte/casier">Istoric Note</a>
+                                          </li>
+                                          <hr class="dropdown-divider">
+                                          <% } %>
+                                            <% if(session.userAdmin===1){ %>
+                                              <li><a class="dropdown-item" href="/locatie/show">Utilizatori</a></li>
+                                              <hr class="dropdown-divider">
+                                              <% } %>
+                                                <li><a class="dropdown-item" href="">Cont</a></li>
+                                                <hr class="dropdown-divider">
+                                                <li><a class="dropdown-item" href="/locatie/users/logout">Schimbă
+                                                    Utilizator</a></li>
+                                                <li>
+                                                  <hr class="dropdown-divider">
+                                                </li>
+                                                <li><a class="dropdown-item" href="/locatie/logout">Ieșire Locație</a>
+                                                </li>
+                              </ul>
+                            </li>
+                            <% if(session.userAdmin===1 || session.userAdmin===0 ) { %>
+                              <div class="nav-metoda">
+                                <i class="bi bi-cash"></i>
+                                <span class="nav-cash" style="font-size:30px;"></span>
+                              </div>
+                              <div class="nav-metoda">
+                                <i class="bi bi-credit-card"></i>
+                                <span class="nav-card" style="font-size:30px;"></span>
+                              </div>
+                              <div class="nav-total">
+                                <i class="bi bi-house-fill"></i>
+                                <span class="card-cash" style="font-size:30px;"></span>
+                              </div>
+                              <div class="nav-addRed ms-4">
+                                <span class="addSuma" style="font-size:30px; color:green;"></span>
+                              </div>
+                              <% } %>
+                      </div>
+        </div>
+      </div>
+  </nav>
+  <% } %>
+
+    <!-- <script>
+      const brand = document.querySelector('#brand')
+      const titlu = brand.innerText
+      brand.innerText = cap(titlu)
+      function cap(value) {
+        return String(value).charAt(0).toUpperCase() + String(value).slice(1);
+      }
+
+    </script> -->

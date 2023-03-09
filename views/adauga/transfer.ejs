@@ -1,0 +1,91 @@
+<% layout('layouts/boilerplate') %>
+
+    <div style="border:2px solid #ffb703; border-radius: 3px; padding: 10px; margin: 50px 0 6px 0">
+        <h4 class=" text-center mb-4">Transfer între gestiuni
+        </h4>
+
+        <div class="row">
+            <div class="col-lg-4">
+                <h5 class=" text-center mb-2">Adaugă produs în bon
+                </h5>
+                <input type="text" id="cauta2" name="ingredient[nume]" class="form-control" placeholder="Caută...">
+                <div class="search-res" id="searchIngGst">
+
+                </div>
+                <input type="text" name="ingredient[um]" readonly="true" id="um1" class="form-control my-1"
+                    placeholder="UM" aria-describedby="basic-addon1" required>
+                <input type="number" name="ingredient[pret]" id="pret1" class="form-control my-1  " placeholder="Pret"
+                    aria-describedby="basic-addon1" readonly="true" required>
+                <input type="number" name="ingredient[qty]" id="cant1" class="form-control my-1"
+                    placeholder="Cantitate">
+                <div class="d-grid gap-2">
+                    <a class="btn btn-warning" id="addBonTransfer">Adaugă în bon +</a>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="row text-center">
+                    <span class="col">Alege gestiunea care se transferă</span>
+                    <span class="col">Alege gestiunea care primește</span>
+                    <span class="col">Alege data</span>
+                </div>
+
+                <form action="/ingredient/addInv?_method=PUT" method="POST" novalidate class="validated-form">
+                    <div class="input-group search mb-3">
+                        <select class="form-select" name="bon[gestSend]" id="gestSend"
+                            aria-label="Default select example" placeholder="Alege departament" required>
+                            <option value="">Alege Gestiunea din care se transferă</option>
+                            <%for(let i=0; i<gestiune.length; i++) {%>
+                                <option value='<%=gestiune[i]._id%>'>
+                                    <%=gestiune[i].nume%>
+                                </option>
+                                <% } %>
+                        </select>
+                        <select class="form-select" name="bon[gestRecive]" id="gestRecive"
+                            aria-label="Default select example" placeholder="Alege departament" required>
+                            <option value="">Alege Gestiunea care primește</option>
+                            <%for(let i=0; i<gestiune.length; i++) {%>
+                                <option value='<%=gestiune[i]._id%>'>
+                                    <%=gestiune[i].nume%>
+                                </option>
+                                <% } %>
+                        </select>
+                        <input type="date" name="bon[data]" class="form-control data" id="dataTr" value=""
+                            aria-describedby="basic-addon1" required>
+                    </div>
+
+                    <div class="row text-center mb-3 hide bonTransfer">
+                        <span class="col">Nume</span>
+                        <span class="col">UM</span>
+                        <span class="col">Pret</span>
+                        <span class="col">Cantitate</span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-2 offset-7">
+                            <div class="input-group valWrapp hide">
+                                <label style="font-size:22px;" for="valoare">Total</label>
+                                <input type="text" id="valoare" name="bon[valoare]" style="border:none;"
+                                    class="form-control bg-transparent right-align" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-info hide" id="btnAddBon">Salvează
+                            Bon</button>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+
+
+
+
+
+    </div>
+
+    <script src="/javascripts/transfer.js"></script>

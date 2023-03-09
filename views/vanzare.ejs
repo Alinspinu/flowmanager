@@ -1,0 +1,155 @@
+<% layout('layouts/boilerplate') %>
+
+    <div class="row-total">
+        <div class="raport-wrapper">
+            <div class="x">
+                <span style="font-size:20px; margin-left:3px;">raport</span>
+                <span style="font-size:30px;">X</span>
+            </div>
+            <div class="z">
+                <span style="font-size:20px; margin-left:3px;">raport</span>
+                <span style="font-size:30px;">Z</span>
+            </div>
+
+            <button type="button" class="btn-lg btn btn-info me-2 add" data-bs-toggle="modal"
+                data-bs-target="#adaugaModal">
+                +
+            </button>
+
+            <button type="button" class="btn-lg btn btn-info red" data-bs-toggle="modal" data-bs-target="#scoateModal">
+                -
+            </button>
+        </div>
+
+
+        <div class="modal fade" id="adaugaModal" tabindex="1" aria-labelledby="adaugaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="total-modal-row">
+                            <span>Adauga numerar în casă:</span>
+
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-body">
+                            <div class="plata">
+                                <div class="suma-modal-wraper mb-3">
+                                    <input type="number" name="suma" id="addSuma">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-lg btn-info" id="addCasa"
+                            data-bs-dismiss="modal">Adauga</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="scoateModal" tabindex="1" aria-labelledby="adaugaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="total-modal-row">
+                            <span>Scoate numerar din casă:</span>
+
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-body">
+                            <div class="plata">
+                                <div class="suma-modal-wraper mb-3">
+                                    <input type="number" name="suma" id="redSuma">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-lg btn-info" id="redCasa"
+                            data-bs-dismiss="modal">Scoate</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row contix">
+        <div class="cont col-lg-6" id="search">
+
+        </div>
+
+        <div class="col-lg-6 wrapNota">
+            <div class="row header mb-4">
+                <span class="col-lg-5">Produs</span>
+                <span class="col-lg-3">Pret</span>
+                <span class="col-lg-4">Cantitate</span>
+            </div>
+            <div class="bill">
+
+            </div>
+            <div class="row reducere mx-0">
+                <span class="col-lg-7 mt-3">Reducere</span>
+                <input type="text" class="col-lg-2 redImp mt-2">
+                <span class="col-lg-1 mt-3">lei</span>
+            </div>
+
+            <div class="row total mx-0">
+                <span class="col-lg-5">TOTAL</span>
+                <span class="col-lg-3" id="total"></span>
+                <button type="button" class="col-lg-2 btn-lg btn btn-info nto mt-2" data-bs-toggle="modal"
+                    data-bs-target="#notaModal">
+                    Notă
+                </button>
+
+                <div class="modal fade" id="notaModal" tabindex="-1" aria-labelledby="notaModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="total-modal-row">
+                                    <span>Total</span>
+                                    <span class="modal-pret">...</span>
+                                    <span class="ms-2">lei</span>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="modal-body">
+                                    <div class="plata">
+                                        <div class="cash-modal-wraper mb-3">
+                                            <span class="btn btn-info cash mb-2">Numerar</span>
+                                            <input type="text" name="cash" id="cash">
+                                        </div>
+                                        <div class="card-modal-wraper my-3">
+                                            <span class="btn btn-info car mb-2">Card</span>
+                                            <input type="text" name="card" id="card">
+                                        </div>
+                                        <div class="cif-modal-wraper mb-3">
+                                            <span class="btn btn-info ro mb-2 fs-2">CIF</span>
+                                            <input type="text" name="suma" id="addCif">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <!-- <input type="checkbox" name="bon" id="bon"> -->
+                                <label for="nrMasa">Numar Masa</label>
+                                <input type="number" name="nrMasa" id="nrMasa">
+                                <button type="button" class="btn btn-lg btn-info nota"
+                                    data-bs-dismiss="modal">Notă</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- <script src="/javascripts/butoane.js"></script> -->
+    <script src="/javascripts/search.js"></script>

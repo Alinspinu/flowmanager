@@ -1,0 +1,36 @@
+<% layout('layouts/boilerplate') %>
+
+    <form action="/locatie/user/register" method="POST" novalidate class="validated-form">
+        <div class="card col-lg-3 offset-lg-4" style="width: 26rem; padding:8px 8px 8px 8px; margin-top: 50px;">
+            <h3 class="text-center mb-5"> Înregistrează-te!</h3>
+            <div class="">
+                <label for="username" class="form-label">Username (Nume folosit în aplicatie)</label>
+                <input type="text" name="user[username]" class="form-control" id="username" required>
+            </div>
+            <div class="">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" name="user[email]" class="form-control" id="email">
+            </div>
+            <div class="">
+                <label for="nume" class="form-label ">Nume Complet</label>
+                <input type="text" class="form-control" name="user[nume]" id="nume" aria-describedby="locatie" required>
+            </div>
+            <div class="">
+                <label for="admin" class="form-label">Funcția ocupată</label>
+                <select name="user[admin]" id="admin" class="form-select" required>
+                    <option value="0">Casier</option>
+                    <option value="2">Barista</option>
+                    <option value="3">Bucătar</option>
+                </select>
+            </div>
+            <div class="">
+                <label for="password" class="form-label">Parolă</label>
+                <input type="password" name="user[parola]" class="form-control" id="password" required>
+            </div>
+            <div class="mb-3">
+                <label for="confirmPassowrd" class="form-label">Confirmă Parolă</label>
+                <input type="password" name="user[confirmPassword]" class="form-control" id="confirmPassword" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Înregistrează-te</button>
+        </div>
+    </form>

@@ -1,0 +1,17 @@
+<% layout('layouts/boilerplate') %>
+
+    <form action="/locatie/login" method="POST" novalidate class="validated-form">
+        <div class="card col-lg-3 offset-lg-4" style="width: 26rem; padding:8px 8px 8px 8px; margin-top: 200px;">
+            <h3 class="text-center">Intră în locație</h3>
+            <div class="">
+                <label for="locatie" class="form-label">Locație</label>
+                <input type="text" class="form-control" name="username" id="locatie" aria-describedby="locatie"
+                    required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Parolă</label>
+                <input type="password" name="password" class="form-control" id="password" required>
+            </div>
+            <button type="submit" class="btn btn-success">Intră</button>
+        </div>
+    </form>

@@ -1,0 +1,108 @@
+<% layout('layouts/boilerplate') %>
+
+
+    <div style="border:2px solid #ffb703; border-radius: 3px; padding: 6px; margin: 12px 0 0 0;">
+        <h4 class="my-3 text-center">Adaugă marfă de la furnizor în magazie (NIR)</h4>
+        <div class="row">
+
+            <div class="col-lg-3">
+                <h5 class="fs-5 text-center mb-4">Adaugă Produs în NIR</h5>
+
+                <input type="text" name="nir[produs][nume]" id="prodNume" class="form-control" placeholder="Nume Produs"
+                    aria-describedby="basic-addon1" required>
+                <div class="search-res" id="prodNirSearch">
+                </div>
+                <input type="text" name="nir[produs][um]" id="prodUm" class="form-control" placeholder="UM"
+                    aria-describedby="basic-addon1" required>
+                <input type="number" name="nir[produs][cantitate]" id="prodCant" class="form-control"
+                    placeholder="Cantitate" aria-describedby="basic-addon1" required>
+                <input type="number" name="nir[produs][pretUmInt]" id="prodPretIn" class="form-control"
+                    placeholder="Pret/UM/Fară TVA" aria-describedby="basic-addon1" required>
+                <input type="number" name="nir[produs][valoareInt]" id="prodValIn" class="form-control"
+                    placeholder="Valoare" aria-describedby="basic-addon1" required>
+                <input type="number" name="nir[produs][cotaTva]" id="cotaTva" class="form-control"
+                    placeholder="Cota TVA %" aria-describedby="basic-addon1" required>
+                <input type="number" name="nir[produs][valTva]" id="valTva" class="form-control"
+                    placeholder="Valoare TVA" aria-describedby="basic-addon1" required>
+                <input type="number" name="nir[produs][total]" id="prodTotal" class="form-control" placeholder="Total"
+                    aria-describedby="basic-addon1" required>
+                <select class="form-select" name="produs[categorie]" id="prodCat" aria-label="Default select example"
+                    placeholder="Alege departament" required>
+                    <option value='Marfa'>Marfa</option>
+                    <option value='Materie Prima'>Materie Prima</option>
+                    <option value='Consumabil'>Consumabile</option>
+                </select>
+                <select class="form-select" name="produs[gestiune]" id="prodGestiune"
+                    aria-label="Default select example" required>
+                    <option value="">Alege Gestiunea care primește</option>
+                    <%for(let i=0; i<gestiune.length; i++) {%>
+                        <option value='<%=gestiune[i]._id%>'>
+                            <%=gestiune[i].nume%>
+                        </option>
+                        <% } %>
+                </select>
+                <input type="number" name="nir[produs][pretVanzareUm]" id="prodPrtVnz" class="form-control"
+                    placeholder="Pret Vanzare/UM" aria-describedby="basic-addon1">
+                <div class="d-grid gap-2">
+                    <a class="btn btn-warning" id="addPrd">Add+</a>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <form action="/ingredient/addIngredient" method="POST" novalidate class="validated-form">
+                    <div class="row mt-4 furHeader text-center">
+                        <span class="col-3">Nume</span>
+                        <span class="col-3">CIF</span>
+                        <span class="col-3">Nr Document</span>
+                        <span class="col-3">Data</span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="nir[furnizor]" id="furnizor" class="form-control"
+                            placeholder="Furnizor" aria-describedby="basic-addon1" required>
+                        <input type="text" name="nir[cif]" id="cifNir" class="form-control" placeholder="CIF"
+                            aria-describedby="basic-addon1" required>
+                        <input type="text" name="nir[furId]" id="furId" class="form-control hide" placeholder="CIF"
+                            aria-describedby="basic-addon1" required>
+                        <input type="text" name="nir[nrDoc]" id="nrDoc" class="form-control" placeholder="Numar Factura"
+                            aria-describedby="basic-addon1" required>
+                        <input type="date" name="nir[data]" id="data" class="form-control data" value=""
+                            aria-describedby="basic-addon1" required>
+                    </div>
+                    <div class="search-res" id="searchFur">
+                    </div>
+                    <div class="row nirHeader hide text-center" style="font-size:12px ;">
+                        <span class="col ms-5">Nume</span>
+                        <span class="col ms-3">UM</span>
+                        <span class="col">Qty</span>
+                        <span class="col">Pret F Tva</span>
+                        <span class="col">Valoare</span>
+                        <span class="col">Cota Tva%</span>
+                        <span class="col">Valoare Tva</span>
+                        <span class="col me-3">Total</span>
+                        <span class="col">Tip</span>
+                        <span class="col me-4">Gestiune</span>
+                        <span class="col">Pret Vânz</span>
+                    </div>
+                    <div class="row totaluri hide">
+                        <span class="col-1" style="margin:0 0 0 309px; font-weight: 500;">Total:</span>
+                        <span class="col-1" id="tVal"></span>
+                        <span class="" style="width:66px;"></span>
+                        <span class="col-1" id="tTva"></span>
+                        <span class="col-1" id="Tot"></span>
+                    </div>
+                    <div class="row">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-info hide" id="saveNir">Salvează
+                                NIR</button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- <script src="/javascripts/reteta.js"></script> -->
+    <script src="/javascripts/nir.js"></script>

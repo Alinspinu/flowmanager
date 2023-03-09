@@ -1,0 +1,86 @@
+<% layout('layouts/boilerplate') %>
+
+    <div class="row">
+        <div class="col-lg-6 px-0">
+            <div class="card mt-5" style="width: 26rem; padding:8px 8px 8px 8px;">
+                <h3 class="text-center mt-4">Adaugă Client nou</h3>
+                <form action="/locatie/addClient" method="POST" novalidate class="validated-form">
+
+                    <div class="mt-2">
+                        <!-- <label for="nume" class="form-label">Denumire Societate</label> -->
+                        <input type="text" class="form-control" name="client[nume]" id="nume" aria-describedby="locatie"
+                            value="" placeholder="Denumire Societate" required>
+                    </div>
+                    <div class="mt-2">
+                        <!-- <label for="cif" class="form-label">CIF</label> -->
+                        <input type="text" name="client[cif]" class="form-control" id="cif" placeholder="CIF" required>
+                    </div>
+                    <div class="mt-2">
+                        <!-- <label for="rc" class="form-label">Nr Registrul Comerțului</label> -->
+                        <input type="text" name="client[rc]" class="form-control" id="rc" placeholder="Nr Reg. Com."
+                            required>
+                    </div>
+                    <div class="mt-2">
+                        <!-- <label for="rc" class="form-label">Nr Registrul Comerțului</label> -->
+                        <input type="text" name="client[telefon]" class="form-control" placeholder="Telefon"
+                            id="telefon">
+                    </div>
+                    <div class="mt-2">
+                        <!-- <label for="rc" class="form-label">Nr Registrul Comerțului</label> -->
+                        <input type="text" name="client[email]" class="form-control" id="email" placeholder="Email">
+                    </div>
+                    <div class="mt-2">
+                        <!-- <label for="banca" class="form-label">Banca</label> -->
+                        <input type="text" name="client[banca][nume]" class="form-control" id="banca"
+                            placeholder="Denumire Bancă">
+                    </div>
+                    <div class="mt-2">
+                        <!-- <label for="cont" class="form-label">Cont</label> -->
+                        <input type="text" name="client[banca][cont]" class="form-control" id="cont"
+                            placeholder="Cont IBAN">
+                    </div>
+                    <div class="mt-2">
+                        <!-- <label for="adresa" class="form-label">Adresa Sediu Social</label> -->
+                        <textarea type="text" name="client[adresa]" class="form-control" id="adresa"
+                            placeholder="Adresa sediu social.."></textarea>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-warning my-2">Adauga</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card mt-5" style="width: 26rem; padding:8px 8px 8px 8px;">
+                <h3 class="text-center mt-4">Craează factură</h3>
+                <form action="/rapoarte/factura" method="POST" novalidate class="validated-form">
+                    <label for="nume" class="form-label">Caută Client..</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="factura[clientNume]" id="numeClient"
+                            aria-describedby="locatie" value="" placeholder="Cauta client.." required>
+                        <input type="text" class="form-control" name="factura[clientCif]" id="cifNir"
+                            aria-describedby="locatie" value="" placeholder="CIF" required>
+                        <input type="text" class="form-control hide" name="factura[clientId]" id="furId"
+                            aria-describedby="locatie" value="" required>
+                    </div>
+                    <div class="search-res" id="search-res">
+
+                    </div>
+                    <div class="">
+                        <label for="nrBon" class="form-label">Numar Bon Fiscal</label>
+                        <input type="number" name="factura[nrBon]" class="form-control" id="nrBon" required>
+                    </div>
+                    <div class="">
+                        <label for="dataBon" class="form-label">Data bon fiscal</label>
+                        <input type="date" name="factura[dataBon]" class="form-control" id="dataBon" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary my-2">Factură</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/javascripts/factura.js"></script>
