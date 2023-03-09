@@ -101,7 +101,6 @@ app.use("/locatie", locatie);
 app.use("/comanda", comanda);
 
 app.get("/vanzare", isLoggedIn, isCasier, (req, res, next) => {
-  console.log(req.user)
   res.render("vanzare");
 });
 
@@ -170,8 +169,10 @@ app.use(
   })
 );
 
-
-
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://www.flowmanager.ro');
+  next();
+});
 
 // app.get('/locatie/register', async (req, res, next) => {
 //   const pass = 'true'

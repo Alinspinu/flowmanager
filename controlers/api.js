@@ -237,7 +237,6 @@ module.exports.querySearchIng = async (req, res, next) => {
   let pret = [];
   let qty = [];
   const userData = req.body.search;
-  console.log(req.body)
   const ings = await Ingredient.find({ locatie: locatie });
   ings.forEach((el) => {
     nume.push(el.nume);
