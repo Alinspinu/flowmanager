@@ -123,7 +123,7 @@ app.use(
       mediaSrc: ["https://res.cloudinary.com/"],
       connectSrc: [
         "http://localhost:3000/",
-        "https://flowmanager.ro"
+        "https://www.flowmanager.ro"
       ],
       formAction: ["'self'", "https://checkout.stripe.com"],
       scriptSrcAttr: ["'unsafe-inline'"],
