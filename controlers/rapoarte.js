@@ -76,7 +76,16 @@ module.exports.factura = async (req, res, next) => {
     const startDate = new Date(req.body.factura.dataBon)
     const endDate = new Date(startDate.getTime() + 24 * 60 * 60 * 1000)
     const nota = await Nota.find({ data: { $gte: startDate, $lt: endDate }, locatie: locatie._id, index: nrBon })
+    if (!nota.length) {
+        req.flash('error', "Bonul nu a fost gasit!")
+        return res.redirect('back')
+    }
+    if (!clientId) {
+        req.flash('error', "Clientul nu a fost gasit!")
+        return res.redirect('back')
+    }
     const client = await Client.findById(clientId)
+
     const produseNota = nota[0].produse
     let produseFact = []
     for (let i = 0; i < produseNota.length; i++) {
@@ -338,7 +347,7 @@ module.exports.factura = async (req, res, next) => {
     doc.font('Times-Roman')
     doc.text(`Document intocmit de ${userLogat.nume}`, 27, 659)
     //footer factura
-    doc.rect(25, 669, 100, 115)
+    doc.rect(25, 669, 100, 105)
     doc.lineWidth(0.5);
     doc.stroke()
 
@@ -348,7 +357,7 @@ module.exports.factura = async (req, res, next) => {
     doc.text('stampila', 26, 687, { width: 98, align: 'center' })
     doc.text('furnizorului', 26, 699, { width: 98, align: 'center' })
 
-    doc.rect(125, 669, 238, 115)
+    doc.rect(125, 669, 238, 105)
     doc.lineWidth(0.5);
     doc.stroke()
 
@@ -360,7 +369,7 @@ module.exports.factura = async (req, res, next) => {
     doc.text('Eliberat:', 126, 704, { width: 80, align: 'right' })
 
     doc.text('Semnatura Delegat', 126, 722)
-    doc.rect(363, 669, 60, 115)
+    doc.rect(363, 669, 60, 105)
     doc.lineWidth(0.5);
     doc.stroke()
     doc.font('Times-Bold')
@@ -381,11 +390,11 @@ module.exports.factura = async (req, res, next) => {
 
 
 
-    doc.rect(423, 669, 60, 115)
+    doc.rect(423, 669, 60, 105)
     doc.lineWidth(0.5);
     doc.stroke()
 
-    doc.rect(483, 669, 77, 115)
+    doc.rect(483, 669, 77, 105)
     doc.lineWidth(0.5);
     doc.stroke()
 

@@ -178,6 +178,8 @@ app.get("/", async (req, res, next) => {
 
 
 
+
+
 // app.get('/locatie/register', async (req, res, next) => {
 //   const pass = 'true'
 //   const locatie = new Locatie({ username: 'true', platitorTva: })
@@ -209,6 +211,12 @@ app.get("/", async (req, res, next) => {
 //   await gst.save()
 //   res.send(gst)
 // })
+
+app.get('/error', async (req, res, next) => {
+  const errorMessage = req.query.message
+  console.log(errorMessage)
+  res.render('partials/error', { errorMessage })
+})
 
 app.use((err, req, res, next) => {
   const { statusCode = 500 } = err;

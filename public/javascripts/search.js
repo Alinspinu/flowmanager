@@ -1,4 +1,5 @@
 const wrapper = document.querySelector("#search");
+const testWrapper = document.querySelector('#testRow')
 const bill = document.querySelector(".bill");
 const nota = document.querySelector(".nota");
 const nto = document.querySelector(".nto");
@@ -25,6 +26,7 @@ if (currentUrl.slice(0, 22) === baseUrlLocal) {
 
 
 const urlLocalSend = `${baseUrlLocal}api/notaApi`;
+const urlTotaluri = `${baseUrlLocal}api/send-totaluri`
 const urlLocal = `${baseUrlLocal}api/sendCat`;
 const url = `${baseUrlLocal}rapoarte/apiTotal`;
 
@@ -35,9 +37,9 @@ fetch(url).then((res) =>
   res.json().then((data) => {
     const cash = data.totalCash;
     const card = data.totalCard;
-    navCard.innerText = card;
-    navCash.innerText = cash;
-    navTot.innerText = card + cash;
+    navCard.innerText = round2(card);
+    navCash.innerText = round2(cash);
+    navTot.innerText = round2(card + cash);
   })
 );
 
@@ -46,9 +48,9 @@ fetch(urlLocal)
   .then((data) => {
     data.forEach(function (mCat) {
       const btnMainCat = document.createElement("div");
-      btnMainCat.classList.add("btnCat", "btnFrstCat");
+      btnMainCat.classList.add("btnCat", "col-3", "btnFrstCat");
       btnMainCat.innerText = mCat.nume;
-      wrapper.append(btnMainCat);
+      testWrapper.append(btnMainCat);
 
       btnMainCat.onclick = (e) => {
         const allMainBtnCat = wrapper.querySelectorAll(".btnFrstCat");
@@ -57,8 +59,8 @@ fetch(urlLocal)
         });
 
         const backBtn = document.createElement("i");
-        wrapper.append(backBtn);
-        backBtn.classList.add("bi", "btnScdCat", "secBac", "bi-arrow-90deg-up");
+        testWrapper.append(backBtn);
+        backBtn.classList.add("bi", "btnScdCat", "secBac", "bi-arrow-90deg-up", 'col-3');
         backBtn.addEventListener("click", (e) => {
           const butoane = wrapper.querySelectorAll(".btnScdCat");
           butoane.forEach(function (el) {
@@ -72,9 +74,9 @@ fetch(urlLocal)
 
         categorie.forEach((el) => {
           const btnCat = document.createElement("div");
-          btnCat.classList.add("btnCat", "btnScdCat");
+          btnCat.classList.add("btnCat", "btnScdCat", 'col-3');
           btnCat.innerText = el.nume;
-          wrapper.append(btnCat);
+          testWrapper.append(btnCat);
 
           btnCat.onclick = (e) => {
             const backBtnFuck = document.querySelectorAll(".secBac");
@@ -82,12 +84,12 @@ fetch(urlLocal)
               el.remove();
             });
             // backBtnFuck.remove();
-            const allBtnCat = wrapper.querySelectorAll(".btnScdCat");
+            const allBtnCat = testWrapper.querySelectorAll(".btnScdCat");
             allBtnCat.forEach(function (el) {
               el.style.display = "none";
             });
             const backSecBtn = document.createElement("i");
-            wrapper.append(backSecBtn);
+            testWrapper.append(backSecBtn);
             backSecBtn.classList.add(
               "bi",
               "btnProds",
@@ -96,9 +98,9 @@ fetch(urlLocal)
             );
             el.produs.forEach((el, i) => {
               const btnProdus = document.createElement("div");
-              btnProdus.classList.add("btnProd", "btnProds");
+              btnProdus.classList.add("btnProd", "btnProds", 'col-3');
               btnProdus.innerText = el.nume;
-              wrapper.append(btnProdus);
+              testWrapper.append(btnProdus);
 
               btnProdus.addEventListener("click", (e) => {
                 const rows = bill.children
@@ -151,14 +153,14 @@ fetch(urlLocal)
             });
 
             backSecBtn.onclick = (e) => {
-              const allBtnProd = wrapper.querySelectorAll(".btnProds");
+              const allBtnProd = testWrapper.querySelectorAll(".btnProds");
               allBtnProd.forEach((el) => {
                 el.remove();
               });
 
               const backBtn = document.createElement("i");
-              wrapper.append(backBtn);
-              wrapper.insertBefore(backBtn, wrapper.firstChild);
+              testWrapper.append(backBtn);
+              testWrapper.insertBefore(backBtn, testWrapper.firstChild);
               backBtn.classList.add(
                 "bi",
                 "btnScdCat",
@@ -166,7 +168,7 @@ fetch(urlLocal)
                 "bi-arrow-90deg-up"
               );
               backBtn.addEventListener("click", (e) => {
-                const butoane = wrapper.querySelectorAll(".btnScdCat");
+                const butoane = testWrapper.querySelectorAll(".btnScdCat");
                 butoane.forEach(function (el) {
                   el.remove();
                 });
@@ -282,10 +284,6 @@ nota.addEventListener("click", (e) => {
     reducereInput.value = "";
     updateCartTotal();
 
-    // let val = 0;
-    // if (bon.checked) {
-    //   val = 1;
-    // }
     const date = Date.now();
 
     //send the bill to the server to create a bill file
@@ -305,15 +303,25 @@ nota.addEventListener("click", (e) => {
         // bon: val,
         nrMasa: nrMasa.value,
       }),
-    }).then((res) =>
-      res.json().then((data) => {
-        const cash = data.totalCash;
-        const card = data.totalCard;
-        navCard.innerText = card;
-        navCash.innerText = cash;
-        navTot.innerText = card + cash;
-      })
-    );
+    }).then((res) => {
+      console.log(res)
+      if (!res.ok) {
+        return res.text().then((errorMessage) => {
+          const url = `/error?message=${encodeURIComponent(errorMessage)}`;
+          window.location.href = url
+          throw new Error(`Server ERROR: Status - ${res.status} MESSAGE: ${errorMessage}`)
+        })
+      } else {
+        res.json().then((data) => {
+          const cash = data.totalCash;
+          const card = data.totalCard;
+          navCard.innerText = round2(card);
+          navCash.innerText = round2(cash);
+          navTot.innerText = round2(card + cash);
+          console.log(cash, card, navCard.innerText, navCash.innerText)
+        })
+      }
+    })
   } else {
     alert("Valoarea nu corespunde cu totalul bonului mai încearcă odată :))");
   }
@@ -482,4 +490,8 @@ function updateCartTotal() {
     total = total - reducereInput.value;
   }
   document.querySelector("#total").innerText = total + " lei";
+}
+
+function round2(num) {
+  return Math.round(num * 100) / 100;
 }

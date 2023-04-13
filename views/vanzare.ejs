@@ -1,155 +1,270 @@
-<% layout('layouts/boilerplate') %>
+<!DOCTYPE html>
+<html lang="en">
 
-    <div class="row-total">
-        <div class="raport-wrapper">
-            <div class="x">
-                <span style="font-size:20px; margin-left:3px;">raport</span>
-                <span style="font-size:30px;">X</span>
-            </div>
-            <div class="z">
-                <span style="font-size:20px; margin-left:3px;">raport</span>
-                <span style="font-size:30px;">Z</span>
-            </div>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POSApp</title>
+    <link rel="icon" type="image/x-icon" href="data:;base64,iVBORw0KGgo=">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Domine&family=Philosopher&family=Inconsolata:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/stylesheets/nom.css">
+    <link rel="stylesheet" href="/stylesheets/rapoarte.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+</head>
 
-            <button type="button" class="btn-lg btn btn-info me-2 add" data-bs-toggle="modal"
-                data-bs-target="#adaugaModal">
-                +
-            </button>
+<body class=" vh-100">
 
-            <button type="button" class="btn-lg btn btn-info red" data-bs-toggle="modal" data-bs-target="#scoateModal">
-                -
-            </button>
-        </div>
+    <main class="cont m-0">
 
-
-        <div class="modal fade" id="adaugaModal" tabindex="1" aria-labelledby="adaugaModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="total-modal-row">
-                            <span>Adauga numerar în casă:</span>
-
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="modal-body">
-                            <div class="plata">
-                                <div class="suma-modal-wraper mb-3">
-                                    <input type="number" name="suma" id="addSuma">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-lg btn-info" id="addCasa"
-                            data-bs-dismiss="modal">Adauga</button>
-                    </div>
+        <div class="row-total">
+            <div class="raport-wrapper">
+                <div class="x">
+                    <span style="font-size:20px; margin-left:3px;">raport</span>
+                    <span style="font-size:30px;">X</span>
                 </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="scoateModal" tabindex="1" aria-labelledby="adaugaModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="total-modal-row">
-                            <span>Scoate numerar din casă:</span>
-
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="modal-body">
-                            <div class="plata">
-                                <div class="suma-modal-wraper mb-3">
-                                    <input type="number" name="suma" id="redSuma">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-
-                        <button type="button" class="btn btn-lg btn-info" id="redCasa"
-                            data-bs-dismiss="modal">Scoate</button>
-                    </div>
+                <div class="z">
+                    <span style="font-size:20px; margin-left:3px;">raport</span>
+                    <span style="font-size:30px;">Z</span>
                 </div>
-            </div>
-        </div>
 
-    </div>
-    <div class="row contix">
-        <div class="cont col-lg-6" id="search">
+                <div class="fact">
+                    <a href="/rapoarte/factura" style="text-decoration: none; color:black">
+                        <span style="font-size:20px;"><span
+                                style="font-size:30px; margin-left: 3px;">F</span>actură</span>
+                    </a>
+                </div>
+                <div class="nav-metoda" style="background-color: transparent; box-shadow: none; margin-left: auto;">
+                    <i class="bi bi-cash"></i>
+                    <span class="nav-cash" style="font-size:30px;"></span>
+                </div>
+                <div class="nav-metoda" style="background-color: transparent; box-shadow: none;">
+                    <i class="bi bi-credit-card"></i>
+                    <span class="nav-card" style="font-size:30px;"></span>
+                </div>
+                <div class="nav-total" style="background-color: transparent; box-shadow: none;">
+                    <i class="bi bi-house-fill"></i>
+                    <span class="card-cash" style="font-size:30px;"></span>
+                </div>
 
-        </div>
+                <span class="addSuma me-5" style="font-size:30px; color:green;"></span>
 
-        <div class="col-lg-6 wrapNota">
-            <div class="row header mb-4">
-                <span class="col-lg-5">Produs</span>
-                <span class="col-lg-3">Pret</span>
-                <span class="col-lg-4">Cantitate</span>
-            </div>
-            <div class="bill">
+                <li class="nav-item dropdown center me-5" style="list-style: none;">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-display="static"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person fs-2"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                        <%if(session.userAdmin===3) {%>
+                            <li><a class="dropdown-item" href="/comanda/istoricBuc">Istoric Comenzi</a>
+                            </li>
+                            <hr class="dropdown-divider">
+                            <% } %>
+                                <%if(session.userAdmin===2) {%>
+                                    <li><a class="dropdown-item" href="/comanda/istoricBarista">Istoric Comenzi</a>
+                                    </li>
+                                    <hr class="dropdown-divider">
+                                    <% } %>
+                                        <%if(session.userAdmin==0) {%>
+                                            <li><a class="dropdown-item" href="/rapoarte/casier">Istoric Note</a>
+                                            </li>
+                                            <hr class="dropdown-divider">
+                                            <% } %>
+                                                <% if(session.userAdmin===1){ %>
+                                                    <li><a href="/ingredient/stoc" class="dropdown-item">Admin</a></li>
+                                                    <hr class="dropdown-divider">
+                                                    <li><a class="dropdown-item" href="/locatie/show">Utilizatori</a>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
 
-            </div>
-            <div class="row reducere mx-0">
-                <span class="col-lg-7 mt-3">Reducere</span>
-                <input type="text" class="col-lg-2 redImp mt-2">
-                <span class="col-lg-1 mt-3">lei</span>
-            </div>
+                                                    <% } %>
+                                                        <li><a class="dropdown-item" href="">Cont</a></li>
+                                                        <hr class="dropdown-divider">
+                                                        <li><a class="dropdown-item"
+                                                                href="/locatie/users/logout">Schimbă
+                                                                Utilizator</a></li>
+                                                        <li>
+                                                            <hr class="dropdown-divider">
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="/locatie/logout">Ieșire
+                                                                Locație</a>
+                                                        </li>
+                    </ul>
+                </li>
 
-            <div class="row total mx-0">
-                <span class="col-lg-5">TOTAL</span>
-                <span class="col-lg-3" id="total"></span>
-                <button type="button" class="col-lg-2 btn-lg btn btn-info nto mt-2" data-bs-toggle="modal"
-                    data-bs-target="#notaModal">
-                    Notă
+
+
+                <button type="button" class="btn-lg btn btn-info me-2 add" data-bs-toggle="modal"
+                    data-bs-target="#adaugaModal">
+                    +
                 </button>
 
-                <div class="modal fade" id="notaModal" tabindex="-1" aria-labelledby="notaModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <div class="total-modal-row">
-                                    <span>Total</span>
-                                    <span class="modal-pret">...</span>
-                                    <span class="ms-2">lei</span>
-                                </div>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
+                <button type="button" class="btn-lg btn btn-info red me-5" data-bs-toggle="modal"
+                    data-bs-target="#scoateModal">
+                    -
+                </button>
+
+            </div>
+
+
+            <div class="modal fade" id="adaugaModal" tabindex="1" aria-labelledby="adaugaModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="total-modal-row">
+                                <span>Adauga numerar în casă:</span>
+
                             </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
                             <div class="modal-body">
-                                <div class="modal-body">
-                                    <div class="plata">
-                                        <div class="cash-modal-wraper mb-3">
-                                            <span class="btn btn-info cash mb-2">Numerar</span>
-                                            <input type="text" name="cash" id="cash">
-                                        </div>
-                                        <div class="card-modal-wraper my-3">
-                                            <span class="btn btn-info car mb-2">Card</span>
-                                            <input type="text" name="card" id="card">
-                                        </div>
-                                        <div class="cif-modal-wraper mb-3">
-                                            <span class="btn btn-info ro mb-2 fs-2">CIF</span>
-                                            <input type="text" name="suma" id="addCif">
-                                        </div>
+                                <div class="plata">
+                                    <div class="suma-modal-wraper mb-3">
+                                        <input type="number" name="suma" id="addSuma">
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <!-- <input type="checkbox" name="bon" id="bon"> -->
-                                <label for="nrMasa">Numar Masa</label>
-                                <input type="number" name="nrMasa" id="nrMasa">
-                                <button type="button" class="btn btn-lg btn-info nota"
-                                    data-bs-dismiss="modal">Notă</button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-lg btn-info" id="addCasa"
+                                data-bs-dismiss="modal">Adauga</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="scoateModal" tabindex="1" aria-labelledby="adaugaModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="total-modal-row">
+                                <span>Scoate numerar din casă:</span>
+
                             </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-body">
+                                <div class="plata">
+                                    <div class="suma-modal-wraper mb-3">
+                                        <input type="number" name="suma" id="redSuma">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                            <button type="button" class="btn btn-lg btn-info" id="redCasa"
+                                data-bs-dismiss="modal">Scoate</button>
                         </div>
                     </div>
                 </div>
             </div>
 
         </div>
-    </div>
-    <!-- <script src="/javascripts/butoane.js"></script> -->
+        <div class="row m-0 contix">
+            <div class="cont col-lg-6" id="search">
+                <div class="row" id="testRow">
+
+                </div>
+            </div>
+
+            <div class="col-lg-6 wrapNota">
+                <div class="row header mb-4">
+                    <span class="col-lg-5">Produs</span>
+                    <span class="col-lg-3">Pret</span>
+                    <span class="col-lg-4">Cantitate</span>
+                </div>
+                <div class="bill">
+
+                </div>
+                <div class="row reducere mx-0">
+                    <span class="col-lg-7 mt-3">Reducere</span>
+                    <input type="text" class="col-lg-2 redImp mt-2">
+                    <span class="col-lg-1 mt-3">lei</span>
+                </div>
+
+                <div class="row total mx-0">
+                    <span class="col-lg-5">TOTAL</span>
+                    <span class="col-lg-3" id="total"></span>
+                    <button type="button" class="col-lg-2 btn-lg btn btn-info nto mt-2" data-bs-toggle="modal"
+                        data-bs-target="#notaModal" style="font-size:34px;">
+                        Notă
+                    </button>
+
+                    <div class="modal fade" id="notaModal" tabindex="-1" aria-labelledby="notaModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="total-modal-row">
+                                        <span>Total</span>
+                                        <span class="modal-pret">...</span>
+                                        <span class="ms-2">lei</span>
+                                    </div>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="modal-body">
+                                        <div class="plata">
+                                            <div class="cash-modal-wraper mb-3">
+                                                <span class="btn btn-info cash mb-2">Numerar</span>
+                                                <input type="text" name="cash" id="cash">
+                                            </div>
+                                            <div class="card-modal-wraper my-3">
+                                                <span class="btn btn-info car mb-2">Card</span>
+                                                <input type="text" name="card" id="card">
+                                            </div>
+                                            <div class="cif-modal-wraper mb-3">
+                                                <span class="btn btn-info ro mb-2 fs-2">CIF</span>
+                                                <input type="text" name="suma" id="addCif">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <!-- <input type="checkbox" name="bon" id="bon"> -->
+                                    <label for="nrMasa">Numar Masa</label>
+                                    <input type="number" name="nrMasa" id="nrMasa">
+                                    <button type="button" class="btn btn-lg btn-info nota" data-bs-dismiss="modal"
+                                        style="font-size:40px;">Notă</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
+        integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
+        crossorigin="anonymous"></script>
+    <script src="/javascripts/validateForms.js"></script>
     <script src="/javascripts/search.js"></script>
+</body>
+
+</html>
+
+<!-- <script src="/javascripts/butoane.js"></script> -->

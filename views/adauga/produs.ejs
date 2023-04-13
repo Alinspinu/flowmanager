@@ -1,84 +1,76 @@
 <% layout('layouts/boilerplate') %>
 
+    <h4 class="text-center my-4">Adaugă Produs în Meniu</h4>
 
-
-
-    <div style="border:2px solid #ffb703; border-radius: 3px; padding: 12px; margin: 50px 0 0 0;">
-        <h4 class="text-center mb-4">Adaugă Produs în Meniu</h4>
-
-        <div class="row">
-
-            <div class="col-lg-4">
-                <h5 class="text-center">Adaugă Ingredient</h5>
-                <input type="text" id="cauta" name="ingredient[nume]" class="form-control" placeholder="Caută ing...">
-                <div class="search-res" id="searchReteta">
-
-                </div>
-                <input type="text" name="ingredient[um]" readonly="true" id="um" class="form-control my-1"
-                    placeholder="UM" aria-describedby="basic-addon1" required>
-                <input type="number" name="ingredient[pret]" id="pretIng" class="form-control my-1" placeholder="Pret"
-                    aria-describedby="basic-addon1" readonly="true" required>
-                <input type="number" name="ingredient[qty]" id="cant" class="form-control my-1" placeholder="Cantitate">
-                <div class="d-grid gap-2">
-                    <a class="btn btn-warning" id="addIng">Adaugă în Rețetă</a>
-                </div>
+    <div class="row">
+        <div class="card col-lg-3 mt-2" style="width: 20rem; padding:8px 8px 8px 8px;">
+            <h5 class="text-center">Adaugă Ingredient</h5>
+            <input type="text" id="cauta" name="ingredient[nume]" class="form-control" placeholder="Caută ing...">
+            <div class="search-res" id="searchReteta">
             </div>
-            <div class="col-lg-8 mt-4">
-
-                <form action="/produs/addProdus" method="POST" novalidate class="validated-form">
-                    <div class="input-group mb-3">
-                        <input type="text" name="produs[nume]" id="nume" class="form-control"
-                            placeholder="Denumire Produs" aria-describedby="basic-addon1" required>
-                        <input type="number" name="produs[pret]" id="pret" class="form-control" placeholder="Pret"
-                            aria-describedby="basic-addon1" required>
-                        <select class="form-select" name="produs[departament]" id="departament"
-                            aria-label="Default select example" required>
-                            <option value="" selected>Alege Departament</option>
-                            <option value="1">Marfuri</option>
-                            <option value="2">Preparate</option>
-                            <option value="3">Servicii</option>
-                            <option value="4">Tips</option>
-                        </select>
-                        <% if(session.passport.user.platitorTva){%>
-                            <select class="form-select" name="produs[cotaTva]" id="departament"
-                                aria-label="Default select example" required>
-                                <option value="" selected>Alege Cota TVA</option>
-                                <option value="19">19%</option>
-                                <option value="9">9%</option>
-                                <option value="5">5%</option>
-                            </select>
-                            <% } %>
-                                <select class="form-select" name="produs[categorie]" id="categorie"
-                                    aria-label="Default select example" placeholder="Alege departament" required>
-                                    <option value="" selected>Alege Categorie</option>
-                                    <% for(let i=0; i<cats.length; i++) {%>
-                                        <option value='<%=cats[i]._id%>'>
-                                            <%=cats[i].nume%>
-                                        </option>
-                                        <% } %>
-                                </select>
-
-                    </div>
-
-                    <div class="row text-center hide reteta">
-                        <span class="col">Rețetă</span>
-                        <span class="col">Qty</span>
-                        <span class="col">Lei</span>
-                    </div>
-                    <div class="row">
-                        <span class="totReteta hide col-lg-4 offset-lg-8 mt-2"></span>
-                    </div>
-
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-info hide" id="addProdusBtn">Adaugă Produs</button>
-                    </div>
-
-                </form>
+            <input type="text" name="ingredient[um]" readonly="true" id="um" class="form-control my-1" placeholder="UM"
+                aria-describedby="basic-addon1" required>
+            <input type="number" name="ingredient[pret]" id="pretIng" class="form-control my-1" placeholder="Pret"
+                aria-describedby="basic-addon1" readonly="true" required>
+            <input type="number" name="ingredient[qty]" id="cant" class="form-control my-1" placeholder="Cantitate">
+            <div class="d-grid gap-2">
+                <a class="btn btn-warning" id="addIng">Adaugă în Rețetă</a>
             </div>
         </div>
+        <div class="card col-lg-8 mt-2" style="width: 60rem; padding:8px 8px 8px 8px;">
+            <form action="/produs/addProdus" method="POST" novalidate class="validated-form">
+                <div class="input-group mb-3">
+                    <input type="text" name="produs[nume]" id="nume" class="form-control" placeholder="Denumire Produs"
+                        aria-describedby="basic-addon1" required>
+                    <input type="number" name="produs[pret]" id="pret" class="form-control" placeholder="Pret"
+                        aria-describedby="basic-addon1" required>
+                    <select class="form-select" name="produs[departament]" id="departament"
+                        aria-label="Default select example" required>
+                        <option value="" selected>Alege Departament</option>
+                        <option value="1">Marfuri</option>
+                        <option value="2">Preparate</option>
+                        <option value="3">Servicii</option>
+                        <option value="4">Tips</option>
+                    </select>
+                    <% if(session.passport.user.platitorTva){%>
+                        <select class="form-select" name="produs[cotaTva]" id="departament"
+                            aria-label="Default select example" required>
+                            <option value="" selected>Alege Cota TVA</option>
+                            <option value="19">19%</option>
+                            <option value="9">9%</option>
+                            <option value="5">5%</option>
+                        </select>
+                        <% } %>
+                            <select class="form-select" name="produs[categorie]" id="categorie"
+                                aria-label="Default select example" placeholder="Alege departament" required>
+                                <option value="" selected>Alege Categorie</option>
+                                <% for(let i=0; i<cats.length; i++) {%>
+                                    <option value='<%=cats[i]._id%>'>
+                                        <%=cats[i].nume%>
+                                    </option>
+                                    <% } %>
+                            </select>
 
+                </div>
 
+                <div class="row text-center hide reteta">
+                    <span class="col">Rețetă</span>
+                    <span class="col">Qty</span>
+                    <span class="col">Lei</span>
+                </div>
+                <div class="row">
+                    <span class="totReteta hide col-lg-4 offset-lg-8 mt-2"></span>
+                </div>
 
+                <div class="d-grid gap-2">
+                    <button class="btn btn-info hide" id="addProdusBtn">Adaugă Produs</button>
+                </div>
+
+            </form>
+        </div>
     </div>
+
+
+
 
     <script src="/javascripts/addProd.js"></script>

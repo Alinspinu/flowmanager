@@ -70,6 +70,23 @@ module.exports.addProdus = async (req, res, next) => {
     const ingNume = req.body.ingrediente.nume;
     const ingQty = req.body.ingrediente.cantitate;
     const ingPret = req.body.ingrediente.pret;
+
+    const ingNumeArr = Array.isArray(ingNume) ? ingNume : [ingNume];
+
+    const ingredientsExist = await Promise.all(
+      ingNumeArr.map(async (val) => {
+        const ingredient = await Ingredient.findOne({ nume: val });
+        return !!ingredient;
+      })
+    );
+
+    if (!ingredientsExist.every((val) => val)) {
+      req.flash(
+        "error",
+        `Unul sau mai multe ingrediente nu există în baza de date`
+      );
+      res.redirect("/produs/addProdus");
+    }
     if (Array.isArray(req.body.ingrediente.nume)) {
       let pretInt = ingPret.map(Number).reduce((acc, num) => acc + num, 0);
       const produsNou = new Produs(produs);

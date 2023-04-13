@@ -14,17 +14,13 @@ const ingredientSchema = new Schema({
     type: Number,
     required: true,
   },
-  pretT: {
-    type: Number,
-    required: true,
-  },
   pret: {
     type: Number,
     required: true,
   },
   cotaTva: {
     type: Number,
-    required: true,
+    default: 0,
   },
   locatie: {
     type: Schema.Types.ObjectId,

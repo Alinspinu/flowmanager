@@ -77,7 +77,7 @@ module.exports.addIngFaraTva = async (req, res, next) => {
       {
         $setOnInsert: {
           um: el.um,
-          cotaTva: el.cotaTva,
+          cotaTva: 0,
           locatie: locatie,
           gestiune: el.gestiune,
         },

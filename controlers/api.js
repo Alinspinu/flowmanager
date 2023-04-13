@@ -25,26 +25,38 @@ module.exports.tva = async (req, res, next) => {
 }
 
 module.exports.reciveNota = async (req, res, next) => {
+  const fileName = "nota.txt";
   let bon = [];
   let bonNf = [];
   const locatie = req.user;
 
   if (req.body.raport === "x") {
     bon.push(`Z,1,______,_,__;0;`);
+    fs.writeFileSync(fileName, bon.join("\n"));
   } else if (req.body.raport === "z") {
     bon.push(`Z,1,______,_,__;1;`);
-    await Counter.findOneAndUpdate(
-      { model: "Nota", locatie: locatie },
-      { value: 0 }
-    );
-    await Counter.findOneAndUpdate(
-      { model: "Comanda", locatie: locatie },
-      { value: 0 }
-    );
+    fs.writeFileSync(fileName, bon.join("\n"));
+    try {
+      await Counter.findOneAndUpdate(
+        { model: "Nota", locatie: locatie },
+        { value: 0 }
+      );
+      await Counter.findOneAndUpdate(
+        { model: "Comanda", locatie: locatie },
+        { value: 0 }
+      );
+    } catch (err) {
+      if (err) {
+        console.log(err)
+        req.flash('error', 'Counterul nu a fost resetat')
+      }
+    }
   } else if (req.body.addSuma) {
     bon.push(`I,1,______,_,__;0;${req.body.addSuma};;;;`);
+    fs.writeFileSync(fileName, bon.join("\n"));
   } else if (req.body.redSuma) {
     bon.push(`I,1,______,_,__;1;${req.body.redSuma};;;;`);
+    fs.writeFileSync(fileName, bon.join("\n"));
   } else if (req.body.total) {
     const userId = req.session.userId;
     const usersArr = locatie.nestedUsers;
@@ -126,68 +138,89 @@ module.exports.reciveNota = async (req, res, next) => {
       bon.push(totalNotaCash);
     }
 
+
+
+    // Create an array to store the update Promises
+    const updatePromises = [];
+
+    // Loop through the produse and update each one
     req.body.produse.forEach(function (el) {
-      Produs.findOneAndUpdate(
-        { nume: el.nume, locatie: locatie },
-        { cantitate: el.cantitate },
-        { returnDocument: "after" },
-        (err, produs) => {
-          if (err) {
-            res.status(500).send(err);
-          } else {
-            const qtyProdus = round(produs.cantitate);
-            produs.ingrediente.forEach(function (ing) {
-              Ingredient.findOne(
-                { nume: ing.nume, locatie: locatie },
-                (err, ingredientInv) => {
-                  if (err) {
-                    res.status(500).send(err);
-                  } else {
-                    let cantFinal = parseFloat(ing.cantitate * qtyProdus);
-                    ingredientInv.cantitate -= round(cantFinal);
-
-                    ingredientInv.save((err, updateIngredient) => {
-                      if (err) {
-                        res.status(500).send(err);
+      const updatePromise = new Promise((resolve, reject) => {
+        Produs.findOneAndUpdate(
+          { nume: el.nume, locatie: locatie },
+          { cantitate: el.cantitate },
+          { returnDocument: "after" },
+          (err, produs) => {
+            if (!produs) {
+              reject(`Produsul ${el.nume} nu a fost gasit in baza de date. Verifică nomenclatorul de produse!`);
+            } else if (err) {
+              reject(err);
+            } else {
+              const qtyProdus = round(produs.cantitate);
+              produs.ingrediente.forEach(function (ing) {
+                const ingredientPromise = new Promise((resolve, reject) => {
+                  Ingredient.findOne(
+                    { nume: ing.nume, locatie: locatie },
+                    (err, ingredientInv) => {
+                      if (!ingredientInv) {
+                        reject(`Ingredientul ${ing.nume} nu a fost găsit în baza de date. Posibil ca în rețeta produsului ${produs.nume}, ingredientul să fie trecut greșit. Verifică ingredientul ${ing.nume} în nomenclator și verifică-l si în rețeta produsului ${produs.nume}. Trebuie să corespundă!`);
+                      } else if (err) {
+                        reject(err);
+                      } else {
+                        let cantFinal = parseFloat(ing.cantitate * qtyProdus);
+                        ingredientInv.cantitate -= round(cantFinal);
+                        ingredientInv.save((err, updateIngredient) => {
+                          if (err) {
+                            reject(err);
+                          } else {
+                            resolve();
+                          }
+                        });
                       }
-                    });
-                  }
-                }
-              );
-            });
+                    }
+                  );
+                });
+                updatePromises.push(ingredientPromise);
+              });
+              resolve();
+            }
           }
-        }
-      );
+        );
+      });
+      updatePromises.push(updatePromise);
     });
+
+
+    // Wait for all update Promises to resolve
+    Promise.all(updatePromises)
+      .then(() => {
+        // All updates have completed successfully, so run the final code here        
+        fs.writeFileSync(fileName, bon.join("\n"));
+        const startOfDay = new Date();
+        startOfDay.setUTCHours(0, 0, 0, 0);
+        const endOfDay = new Date();
+        endOfDay.setUTCHours(23, 59, 59, 999);
+        return Nota.find({ data: { $gte: startOfDay, $lte: endOfDay } })
+          .then((note) => {
+            let totalCash = 0
+            let totalCard = 0
+            for (let nota of note) {
+              totalCard += nota.card;
+              totalCash += nota.cash;
+            }
+            res.json({ totalCard, totalCash })
+          })
+
+      })
+      .catch((err) => {
+        console.log(err)
+        // An error occurred during the updates, so handle the error here
+        res.status(500).send(err);
+      });
   }
 
-  const fileName = 'nota.txt'
-
-  fs.writeFileSync(fileName, bon.join('\n'));
-  const fileName1 = 'nota1.txt'
-  setTimeout(() => {
-    fs.writeFileSync(fileName1, bonNf.join('\n'))
-  }, 500)
 
 
-
-
-
-  const startOfDay = new Date();
-  startOfDay.setUTCHours(0, 0, 0, 0);
-  const endOfDay = new Date();
-  endOfDay.setUTCHours(23, 59, 59, 999);
-  const note = await Nota.find({
-    data: { $gte: startOfDay, $lte: endOfDay },
-    locatie: locatie,
-  });
-  let totalCash = 0;
-  let totalCard = 0;
-  for (let nota of note) {
-    totalCard += nota.card;
-    totalCash += nota.cash;
-  }
-  res.json({ totalCard, totalCash });
 };
 
 module.exports.orderDone = async (req, res, next) => {
