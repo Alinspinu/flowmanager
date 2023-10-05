@@ -10,6 +10,10 @@ const mainCatSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Locatie",
   },
+  imagine: {
+    path: String,
+    filename: String
+  },
   categorie: [
     {
       type: Schema.Types.ObjectId,

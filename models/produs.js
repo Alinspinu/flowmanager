@@ -35,6 +35,10 @@ const produsSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "MainCat",
   },
+  imagine: {
+    path: String,
+    filename: String
+  },
 
   ingrediente: [
     {

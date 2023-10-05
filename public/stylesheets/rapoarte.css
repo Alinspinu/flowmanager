@@ -7,9 +7,6 @@
  
 }
 
- .filterHeader button{
-    margin-left: 10px;
- }
 
 .filterHeader select{
     width: 100%
@@ -21,7 +18,7 @@
 }
 
 .filterHeaderWrapper {
-    background-color: rgba(144, 224, 239, 0.4);
+    background-color: white;
     border-radius: 4px;
 }
 
@@ -29,9 +26,10 @@
 input[type="date"]{
     border-radius: 4px;
     margin: 0 0 0 0;
-    border: none;
+    border: 1px solid rgb(193, 192, 192);
+    height: 32px;
     width: 100%;
-    box-shadow: 0 1px 5px 3px rgba(0,0,0,0.12);
+    /* box-shadow: 0 1px 5px 3px rgba(0,0,0,0.12); */
 }
 
 .bonTable{
@@ -45,33 +43,37 @@ input[type="date"]{
     max-width: 100%;
 }
 
-.clsBtn{
-    width: 20px;
-    /* border: 0.5px solid black; */
-    text-align: center;
-    border-radius: 5px;
-    background-color: #90e0ef;
-    font-size: 40px;
-    box-shadow: 0 1px 5px 3px rgba(0,0,0,0.12);
+#fiscal-bill, #produse:disabled{
+    background-color: #e0d4c9;
+    border:none;
 }
-.clsBtn:hover{
-    cursor: pointer;
+
+#fiscal-bill, #produse:hover{
+    background-color: #e0d4c9;
 }
 
 .linie{
-    background-color: #c0c0c0;
+    background-color: #efdfd1;
     cursor: pointer;
     border-radius: 4px;
     border-bottom: 0.5px solid black;
     /* box-shadow: 0 1px 5px 3px rgba(0,0,0,0.12); */
 }
+
+.unregistred-line{
+    background-color: #ff3f04;
+    cursor: pointer;
+    border-radius: 4px;
+    border-bottom: 0.5px solid black;
+}
+
 .bon:hover{
     background-color:#ffbf69 ;
+}
+
+#data{
+    height: 40px;
 }
 /* .liniePrd{
    
 } */
-
-.color1{
-    background-color: #90e0ef;   
-}

@@ -654,7 +654,7 @@ module.exports.addFurnizor = async (req, res, next) => {
     "success",
     `Felicitări! Ai adăugat furnizorul ${nume} în baza de date!`
   );
-  res.redirect("/produs/addProdus");
+  res.redirect("/rapoarte/dashboard");
 };
 
 function round(num) {

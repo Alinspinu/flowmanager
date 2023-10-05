@@ -3,6 +3,7 @@ const Produs = require("../models/produs");
 const Categorie = require("../models/categorie");
 const MainCat = require("../models/mainCat");
 const Gestiune = require("../models/gestiune");
+const { cloudinary } = require('../cloudinary');
 
 const ExpressError = require("../utilities/expressError");
 const Furnizor = require("../models/furnizor");
@@ -10,52 +11,21 @@ const Furnizor = require("../models/furnizor");
 module.exports.nomenclator = async (req, res, next) => {
   const locatie = req.user;
   const produse = await Produs.find({ locatie: locatie });
-  produse.sort((a, b) => (a.nume > b.nume ? 1 : b.nume > a.nume ? -1 : 0));
   const ings = await Ingredient.find({ locatie: locatie }).populate({
     path: "gestiune",
     select: "nume",
   });
+  produse.sort((a, b) => (a.nume > b.nume ? 1 : b.nume > a.nume ? -1 : 0));
   ings.sort((a, b) => (a.nume > b.nume ? 1 : b.nume > a.nume ? -1 : 0));
   res.render("nomenclator", { produse, ings });
 };
 
-module.exports.renderAddCategorie = async (req, res, next) => {
-  const locatie = req.user;
-  const mainCat = await MainCat.find({ locatie: locatie });
-  res.render('adauga/categorie', { mainCat })
-}
 
-module.exports.renderAddFurnizor = async (req, res, next) => {
-  res.render('adauga/furnizor')
-}
 
-module.exports.renderAddNirTva = async (req, res, next) => {
-  const locatie = req.user;
-  const furnizori = await Furnizor.find({ locatie: locatie })
-  const gestiune = await Gestiune.find({ locatie: locatie })
-  res.render('adauga/nir', { furnizori, gestiune })
-}
 
-module.exports.renderAddNirFaraTva = async (req, res, next) => {
-  const locatie = req.user;
-  const gestiune = await Gestiune.find({ locatie: locatie })
-  const furnizori = await Furnizor.find({ locatie: locatie })
-  res.render('adauga/nirFaraTva', { furnizori, gestiune })
-}
-
-module.exports.renderAddProdus = async (req, res, next) => {
-  const locatie = req.user;
-  const cats = await Categorie.find({ locatie: locatie });
-  res.render('adauga/produs', { cats })
-}
-
-module.exports.renderTransfer = async (req, res, next) => {
-  const locatie = req.user;
-  const gestiune = await Gestiune.find({ locatie: locatie })
-  res.render('adauga/transfer', { gestiune })
-}
 
 module.exports.addProdus = async (req, res, next) => {
+  console.log(req.file)
   const locatie = req.user;
   const cat = await Categorie.findById(req.body.produs.categorie);
   const mainCat = await MainCat.findById(cat.mainCat);
@@ -65,7 +35,7 @@ module.exports.addProdus = async (req, res, next) => {
       "error",
       `Produsul ${produs.nume} trebuie sa conțină cel putin un ingredient`
     );
-    res.redirect("/produs/addProdus");
+    res.redirect("/rapoarte/dashboard");
   } else {
     const ingNume = req.body.ingrediente.nume;
     const ingQty = req.body.ingrediente.cantitate;
@@ -85,7 +55,7 @@ module.exports.addProdus = async (req, res, next) => {
         "error",
         `Unul sau mai multe ingrediente nu există în baza de date`
       );
-      res.redirect("/produs/addProdus");
+      res.redirect("/rapoarte/dashboard");
     }
     if (Array.isArray(req.body.ingrediente.nume)) {
       let pretInt = ingPret.map(Number).reduce((acc, num) => acc + num, 0);
@@ -100,7 +70,12 @@ module.exports.addProdus = async (req, res, next) => {
       produsNou.locatie = locatie;
       produsNou.mainCat = mainCat._id;
       cat.produs.push(produsNou);
-
+      if (req.file) {
+        console.log(req.file)
+        const { path, filename } = req.file
+        produsNou.imagine.path = path;
+        produsNou.imagine.filename = filename;
+      }
       await produsNou.save();
       await cat.save();
       req.flash(
@@ -113,6 +88,12 @@ module.exports.addProdus = async (req, res, next) => {
       produsNou.pretInt = req.body.ingrediente.pret;
       produsNou.locatie = locatie;
       produsNou.mainCat = mainCat._id;
+      if (req.file) {
+        console.log(req.file)
+        const { path, filename } = req.file
+        produsNou.imagine.path = path;
+        produsNou.imagine.filename = filename;
+      }
       cat.produs.push(produsNou);
       await produsNou.save();
       await cat.save();
@@ -122,7 +103,7 @@ module.exports.addProdus = async (req, res, next) => {
       );
     }
 
-    res.redirect("/produs/addProdus");
+    res.redirect("/rapoarte/dashboard");
   }
 };
 
@@ -134,17 +115,24 @@ module.exports.renderEdit = async (req, res, next) => {
 };
 
 module.exports.edit = async (req, res, next) => {
-  // const cat = await Categorie.findById(req.body.produs.categorie)
   const { id } = req.params;
   const produs = req.body.produs;
   const ing = req.body.ingrediente;
   const produsNou = await Produs.findById(id);
-
+  if (req.file) {
+    console.log(req.file)
+    const { imagine } = produsNou
+    if (imagine.filename) {
+      await cloudinary.uploader.destroy(imagine.filename)
+    }
+    const { path, filename } = req.file
+    produsNou.imagine.path = path;
+    produsNou.imagine.filename = filename;
+  }
   produsNou.nume = produs.nume;
   produsNou.pret = produs.pret;
   produsNou.departament = produs.departament;
   produsNou.cotaTva = produs.cotaTva
-  // produsNou.categorie = produs.categorie
   if (Array.isArray(req.body.ingrediente.nume)) {
     let pretInt = ing.pret.map(Number).reduce((acc, num) => acc + num, 0);
     let result = ing.nume.map((val, index) => ({
@@ -168,18 +156,22 @@ module.exports.edit = async (req, res, next) => {
       `Felicitări tocmani ai modificat produsul ${produsNou.nume}!`
     );
   }
-  res.redirect("/produs/nomenclator");
+  res.redirect("/rapoarte/dashboard");
 };
 
 module.exports.delete = async (req, res, next) => {
   const { id } = req.params;
   const produs = await Produs.findOne({ _id: id });
+  const { imagine } = produs
+  if (imagine.filename) {
+    await cloudinary.uploader.destroy(imagine.filename)
+  }
   await Produs.findByIdAndDelete(id);
   req.flash(
     "success",
     `Felicitări! Ai șters cu succes produsul: ${produs.nume}`
   );
-  res.redirect("/produs/nomenclator");
+  res.redirect("/rapoarte/dashboard");
 };
 
 module.exports.addMainCat = async (req, res, next) => {
@@ -189,9 +181,14 @@ module.exports.addMainCat = async (req, res, next) => {
     nume,
     locatie,
   });
+  if (req.file) {
+    const { path, filename } = req.file
+    mainCat.imagine.path = path;
+    mainCat.imagine.filename = filename;
+  }
   await mainCat.save();
   req.flash("success", `Felicitări ai creat categoria ${mainCat.nume}!`);
-  res.redirect("/produs/addCategorie");
+  res.redirect("/rapoarte/dashboard");
 };
 
 module.exports.addCat = async (req, res, next) => {
@@ -203,6 +200,11 @@ module.exports.addCat = async (req, res, next) => {
     locatie,
     mainCat,
   });
+  if (req.file) {
+    const { path, filename } = req.file
+    cat.imagine.path = path;
+    cat.imagine.filename = filename;
+  }
   await cat.save();
   mCat.categorie.push(cat);
   await mCat.save();
@@ -210,5 +212,5 @@ module.exports.addCat = async (req, res, next) => {
     "success",
     `Felicitări ai adaugat categoria ${cat.nume} la ${mCat.nume}!`
   );
-  res.redirect("/produs/addCategorie");
+  res.redirect("/rapoarte/dashboard");
 };

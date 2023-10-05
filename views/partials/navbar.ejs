@@ -9,10 +9,10 @@
         <div class="navbar-nav ms-auto ">
           <% if(session.userAdmin===1 || session.userAdmin===0 ) { %>
             <a class="me-5" aria-current="page" href="/rapoarte/factura">
-              Factură
+              Create Invoice
             </a>
             <a class="me-5" aria-current="page" id="brand" href="/vanzare">
-              Vanzare
+              Sale Front
             </a>
 
             <% } %>
@@ -35,11 +35,11 @@
                               <i class="bi bi-card-list fs-4"></i>
                             </a>
                             <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="/produs/nomenclator">Nomenclator</a></li>
-                              <li><a class="dropdown-item" href="/ingredient/stoc">Stoc Live</a></li>
-                              <li><a class="dropdown-item" href="/rapoarte/rap">Note</a></li>
-                              <li><a href="/comanda/barista" class="dropdown-item">Comenzi Live Barista</a></li>
-                              <li><a href="/comanda/bucatarie" class="dropdown-item">Comenzi Live Bucatarie</a></li>
+                              <li><a class="dropdown-item" href="/produs/nomenclator">Documents</a></li>
+                              <li><a class="dropdown-item" href="/ingredient/stoc">Live Stoc</a></li>
+                              <li><a class="dropdown-item" href="/rapoarte/rap">Fiscal Bills</a></li>
+                              <li><a href="/comanda/barista" class="dropdown-item">Live Orders Barista</a></li>
+                              <li><a href="/comanda/bucatarie" class="dropdown-item">Live Orders Bucatarie</a></li>
                             </ul>
                           </li>
                           <li class="nav-item dropdown" style="list-style: none; margin:0 10px 0 10px;">
@@ -48,24 +48,23 @@
                               <i class="bi bi-plus-circle-dotted fs-4"></i>
                             </a>
                             <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="/produs/addFurnizor">Adaugă Furnizor</a></li>
+                              <li><a class="dropdown-item" href="/produs/addFurnizor">Add Suplier</a></li>
                               <% if(session.passport.user.platitorTva) {%>
-                                <li><a class="dropdown-item" href="/produs/addNir">Adaugă Nir</a></li>
+                                <li><a class="dropdown-item" href="/produs/addNir">Add Nir</a></li>
                                 <% } else if (!session.passport.user.platitorTva){ %>
-                                  <li><a class="dropdown-item" href="/produs/addNirFaraTva">Adaugă Nir</a></li>
+                                  <li><a class="dropdown-item" href="/produs/addNirFaraTva">Add Nir</a></li>
                                   <% } %>
                                     <li>
                                       <hr class="dropdown-divider">
                                     </li>
-                                    <li><a class="dropdown-item" href="/produs/transfer">Transfer Între Gestiuni</a>
+                                    <li><a class="dropdown-item" href="/produs/transfer">Transfer</a>
                                     </li>
                                     <li>
                                       <hr class="dropdown-divider">
                                     </li>
-                                    <li><a class="dropdown-item" href="/produs/addCategorie">Adauga Categorii de
-                                        Produse</a>
+                                    <li><a class="dropdown-item" href="/produs/addCategorie">Add Product category</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="/produs/addProdus">Adauga Produse în Meniu</a>
+                                    <li><a class="dropdown-item" href="/produs/addProdus">Add Products in menu</a>
                                     </li>
                             </ul>
                           </li>
@@ -77,32 +76,31 @@
                               </a>
                               <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                                 <%if(session.userAdmin===3) {%>
-                                  <li><a class="dropdown-item" href="/comanda/istoricBuc">Istoric Comenzi</a>
+                                  <li><a class="dropdown-item" href="/comanda/istoricBuc">Odrer History</a>
                                   </li>
                                   <hr class="dropdown-divider">
                                   <% } %>
                                     <%if(session.userAdmin===2) {%>
-                                      <li><a class="dropdown-item" href="/comanda/istoricBarista">Istoric Comenzi</a>
+                                      <li><a class="dropdown-item" href="/comanda/istoricBarista">Order History</a>
                                       </li>
                                       <hr class="dropdown-divider">
                                       <% } %>
                                         <%if(session.userAdmin==0) {%>
-                                          <li><a class="dropdown-item" href="/rapoarte/casier">Istoric Note</a>
+                                          <li><a class="dropdown-item" href="/rapoarte/casier">Bill History</a>
                                           </li>
                                           <hr class="dropdown-divider">
                                           <% } %>
                                             <% if(session.userAdmin===1){ %>
-                                              <li><a class="dropdown-item" href="/locatie/show">Utilizatori</a></li>
+                                              <li><a class="dropdown-item" href="/locatie/show">Users</a></li>
                                               <hr class="dropdown-divider">
                                               <% } %>
                                                 <li><a class="dropdown-item" href="">Cont</a></li>
                                                 <hr class="dropdown-divider">
-                                                <li><a class="dropdown-item" href="/locatie/users/logout">Schimbă
-                                                    Utilizator</a></li>
+                                                <li><a class="dropdown-item" href="/locatie/users/logout">Switch User</a></li>
                                                 <li>
                                                   <hr class="dropdown-divider">
                                                 </li>
-                                                <li><a class="dropdown-item" href="/locatie/logout">Ieșire Locație</a>
+                                                <li><a class="dropdown-item" href="/locatie/logout">Logout Shop</a>
                                                 </li>
                               </ul>
                             </li>

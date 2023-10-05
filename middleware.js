@@ -18,7 +18,6 @@ module.exports.isAdmin = async (req, res, next) => {
 
 module.exports.isCasier = async (req, res, next) => {
     const admin = parseInt(req.session.userAdmin)
-    console.log(admin)
     if (admin === 1 || admin === 0) {
 
         next()

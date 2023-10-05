@@ -4,13 +4,14 @@ const PDFDocument = require("pdfkit");
 const Client = require('../models/client')
 const Produs = require('../models/produs')
 const Factura = require('../models/factura')
+const Ingredient = require('../models/ingredient')
+const Furnizor = require('../models/furnizor')
+const Gestiune = require('../models/gestiune')
+const MainCat = require('../models/mainCat');
+const Categorie = require('../models/categorie');
+const Day = require('../models/day')
+const Entry = require('../models/entry')
 
-
-module.exports.renderRapoarte = async (req, res, next) => {
-    const locatie = req.user
-    const users = locatie.nestedUsers
-    res.render('nota', { users })
-}
 
 module.exports.api = async (req, res, next) => {
     const locatie = req.user
@@ -24,44 +25,150 @@ module.exports.apiRecive = async (req, res, next) => {
     const startDate = new Date(req.body.start)
     const endDate = new Date(req.body.end)
     if (userId === '1') {
-        const note = await Nota.find({ data: { $gte: startDate, $lte: endDate }, locatie: locatie })
+        const note = await Nota.find({ data: { $gte: startDate, $lte: endDate }, locatie: locatie }).populate({ path: 'produse.produs' })
         res.json(note);
     } else {
         const note = await Nota.find({
             'user.id': userId,
             data: { $gte: startDate, $lte: endDate },
             locatie: locatie,
-        })
+        }).populate({ path: 'produse.produs' })
         res.json(note)
     }
 }
 
 
 module.exports.apiNota = async (req, res, next) => {
+    const locatie = req.user
     const id = req.body.id
-    const nota = await Nota.findOne({ _id: id })
+    const nota = await Nota.findOne({ _id: id, locatie: locatie }).populate({ path: 'produse.produs' })
+    // console.log(nota)
     res.json(nota)
 }
 
-module.exports.apiTotal = async (req, res, next) => {
+
+
+module.exports.refreshTotal = async (req, res, next) => {
     const locatie = req.user
     const startOfDay = new Date();
     startOfDay.setUTCHours(0, 0, 0, 0);
     const endOfDay = new Date();
     endOfDay.setUTCHours(23, 59, 59, 999);
-    const note = await Nota.find({ data: { $gte: startOfDay, $lte: endOfDay }, locatie: locatie })
-    let totalCash = 0
-    let totalCard = 0
+    const note = await Nota.find({ data: { $gte: startOfDay, $lte: endOfDay }, locatie: locatie }).populate({ path: 'produse.produs' })
+    let marfa = 0;
+    let prep = 0;
+    let totalCash = 0;
+    let totalCard = 0;
+    let unregistred = 0;
     for (let nota of note) {
-        totalCard += nota.card;
-        totalCash += nota.cash;
+        if(!nota.unregistred){
+            totalCard += nota.card;
+            totalCash += nota.cash;
+        } else {
+            unregistred += nota.cash
+        }
     }
-    res.json({ totalCard, totalCash })
+    note.forEach(function (el) {
+        let reducere = el.reducere
+        el.produse.forEach(function (el) {
+            const dep = el.produs.departament
+            const qty = parseFloat(el.cantitate)
+            const pret = el.produs.pret
+            if (dep === '2') {
+                prep += (qty * pret) - reducere
+            } else if (dep === '1') {
+                marfa += (qty * pret)
+            }
+        })
+    })
+    res.json({ totalCard, totalCash, marfa, prep, unregistred })
 }
-
 
 module.exports.renderFacturaForm = async (req, res, next) => {
     res.render('factura')
+}
+
+module.exports.renderDashboard = async (req, res, next) => {
+    const locatie = req.user
+    const produse = await Produs.find({ locatie: locatie })
+    const ings = await Ingredient.find({ locatie: locatie }).populate({
+        path: "gestiune",
+        select: "nume",
+    });
+    const users = locatie.nestedUsers
+    const furnizori = await Furnizor.find({ locatie: locatie })
+    const gestiune = await Gestiune.find({ locatie: locatie })
+    const mainCat = await MainCat.find({ locatie: locatie })
+    const cats = await Categorie.find({ locatie: locatie })
+    produse.sort((a, b) => (a.nume > b.nume ? 1 : b.nume > a.nume ? -1 : 0));
+    ings.sort((a, b) => (a.nume > b.nume ? 1 : b.nume > a.nume ? -1 : 0));
+    res.render('dashboard', { produse, ings, users, furnizori, gestiune, mainCat, cats, locatie })
+}
+
+module.exports.sendEntry = async (req, res, next) => {
+    const locatie = req.user;
+    const data = req.query.data
+    const dateParts = data.split(".")
+    const year = parseInt(dateParts[2]) + 2000
+    const month = parseInt(dateParts[1]) - 1
+    const day = parseInt(dateParts[0])
+    const dateObject = new Date();
+    dateObject.setFullYear(year);
+    dateObject.setMonth(month);
+    dateObject.setDate(day);
+    dateObject.setUTCHours(0, 0, 0, 0);
+    const regDay = await Day.findOne({ date: dateObject, locatie: locatie }).populate({ path: 'entry' })
+    res.json({ regDay })
+}
+
+module.exports.addEntry = async (req, res, next) => {
+    const locatie = req.user
+    const { tip, date, description, amount } = req.body.entry
+    const entryDate = new Date(date)
+    const newEntry = new Entry({
+        tip: tip,
+        date: entryDate,
+        description: description,
+        amount: tip === 'expense' ? -amount : amount,
+        locatie: locatie,
+    })
+    newEntry.save()
+    const day = await Day.findOne({ date: entryDate, locatie: locatie }).populate({ path: 'entry' })
+    if (day) {
+        const daySum = day.entry.reduce((total, doc) => total + doc.amount, 0)
+        day.entry.push(newEntry)
+        const dayTotal = daySum + newEntry.amount + day.cashIn
+        day.cashOut = dayTotal
+        await day.save()
+    } else {
+        const newDay = new Day({
+            locatie: locatie,
+            date: entryDate,
+            cashOut: newEntry.amount
+        })
+        newDay.entry.push(newEntry)
+        await newDay.save()
+        console.log('first day created')
+    }
+
+    res.redirect('back')
+}
+
+module.exports.deleteEntry = async (req, res, next) => {
+    const locatie = req.user;
+    const { id } = req.body;
+    try {
+        const entry = await Entry.findById(id)
+        const day = await Day.findOne({ date: entry.date })
+        await Entry.findByIdAndDelete(id)
+        await Day.findOneAndUpdate({ _id: day._id }, { $pull: { entry: entry._id } }).exec()
+        day.cashOut = day.cashOut - entry.amount
+        day.save()
+        res.status(200).json({ message: `Entry ${entry.description}, with the amount ${entry.amount} was deleted` })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: err.message })
+    }
 }
 
 module.exports.factura = async (req, res, next) => {
@@ -95,7 +202,7 @@ module.exports.factura = async (req, res, next) => {
     };
     const data = Date.now()
     const factura = new Factura({
-        serie: 'TRUE',
+        serie: 'CFT',
         data: data,
         locatie: locatie._id,
         client: clientId,
@@ -426,3 +533,42 @@ module.exports.factura = async (req, res, next) => {
 function round(num) {
     return Math.round(num * 1000) / 1000;
 }
+
+
+// module.exports.apiTotal = async (req, res, next) => {
+//     const closeConnection = req.query.close
+//     console.log(closeConnection)
+//     res.setHeader("Content-Type", "text/event-stream");
+//     res.setHeader("Cache-Control", "no-cache");
+//     res.setHeader("Connection", "keep-alive");
+
+//     const locatie = req.user
+//     const startOfDay = new Date();
+//     startOfDay.setUTCHours(0, 0, 0, 0);
+//     const endOfDay = new Date();
+//     endOfDay.setUTCHours(23, 59, 59, 999);
+
+//     const changeStream = Nota.watch({ fullDocument: "updateLookup" });
+//     changeStream.on("change", async (change) => {
+//         if (
+//             change.operationType === "insert"
+//         ) {
+//             const note = await Nota.find({ data: { $gte: startOfDay, $lte: endOfDay }, locatie: locatie }).exec()
+//             let totalCash = 0
+//             let totalCard = 0
+//             for (let nota of note) {
+//                 totalCard += nota.card;
+//                 totalCash += nota.cash;
+//             }
+//             const totals = { cash: totalCash, card: totalCard }
+//             console.log(totals)
+//             console.log(closeConnection)
+//             if (closeConnection) {
+//                 changeStream.close()
+//                 res.end();
+//                 return;
+//             }
+//             res.write(`data: ${JSON.stringify(totals)}\n\n`);
+//         }
+//     });
+// }

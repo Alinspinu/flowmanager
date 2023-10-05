@@ -1,0 +1,258 @@
+/* LIVE STOCK STYLES */
+
+.stoc{
+    background-color: white;
+    box-shadow: 0 1px 5px 3px rgba(0, 0, 0, 0.12);
+}
+.stoc th {
+    font-size: 22px;
+    border-bottom: 0.3px solid black;
+    
+}
+
+
+
+.stoc-line {
+    border-bottom: 0.3px solid black;
+    font-size: 20px;
+    padding: 20px;
+}
+
+.all {
+    
+    font-size: 22px;
+    border-bottom: 0.3px solid black;
+}
+
+.wrapper{
+    margin: 10px auto auto auto;
+    display: grid;
+    place-items: center;
+}
+
+.show-search{
+    width: 100% !important
+}
+
+
+.search-input{
+    position: relative;
+    height: 76px;
+    width: 76px;
+    background-color:#e0d4c9;
+    padding: 10px;
+    border-radius: 4rem;
+    overflow: hidden;
+    transition: width .5s cubic-bezier(.9, 0, .3, .9);
+}
+
+.search-input input{
+    height: 100%;
+    border-radius: 4rem;
+    padding-left: 14px;
+    background: fff;
+    width: 100%;
+    outline: none;
+    border: none;
+    font-size: 18px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.9s;
+}
+
+.show-search .src-input{
+    opacity: 1;
+    display: inline;
+    pointer-events: initial;
+}
+
+.show-search .search-icon{
+    transform: rotate(90deg)
+}
+
+.show-search .all{
+   display: none;
+}
+
+.show-search .search-close1{
+    opacity: 1;
+}
+
+.search-input .icons{
+    height: 56px;
+    width: 56px;
+    border-radius: 50%;
+    background-color: #c3a995;
+    line-height: 55px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 10px;
+    margin: auto;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+
+.search-icon,
+.search-close1{
+    color: black;
+    position: absolute;
+    font-size: 1.5rem;
+    transition: opacity 0.5s cubic-bezier(0.9, 0, 0.3, 0.9);
+}
+
+.search-close1{
+    opacity: 0;
+}
+
+
+/* *******************STYLES FISCAL BILL****************** */
+
+.filterHeaderWrapper{
+    background-color: #f4f3ee;
+}
+
+/* ************************************* */
+
+
+
+/* ************************************* */
+
+/*STYLES ADD SUPLIER*/
+.label{
+    display:block;
+}
+/* ************************************* */
+
+/*STYLES ADD NIR*/
+
+.form-label {
+    font-size: 12px;
+    margin-bottom: 0.1rem;
+}
+/* ************************************* */
+
+/* ****************STYLES USERS**************** */
+.card li:hover {
+    cursor: pointer;
+    background-color: #caf0f8;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+/* ************************************* */
+/* *****************STYLES TRANSFER***************** */
+#dataTr{
+    height: 45px;
+}
+
+/* ************************************* */
+
+
+/* ***************STYLES ADD PRODUCT****************** */
+.file-label {
+    width: 150px;
+    display: inline-block;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .file-input {
+    display: none;
+  }
+/* ************************************* */
+
+#myTab button{
+    color: #a46529;
+}
+#myTab a{
+    color: #a46529;
+}
+
+
+/* ******************************STYLES CASH REGISTER *************************************/
+
+
+#dayTab li{
+    font-size: 14px;
+}
+#dayTab li button{
+    color: #a46529;
+}
+#prevBtn{
+    font-size: 25px;
+    cursor: pointer;
+    color: #a46529;
+}
+
+.next{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    
+}
+#nextBtn{
+    font-size: 25px;
+    cursor: pointer;
+    color: #a46529;
+    /* box-shadow: 0 1px 5px 3px rgba(0, 0, 0, 0.12); */
+}
+#nextBtn:active{
+  color: #e0d4c9
+}
+
+#prevBtn:active{
+    color: #e0d4c9;
+}
+
+.border{
+    border: 1px, solid, black;
+    border-radius: 4px;
+}
+
+.prev-day-header{
+    margin: 30px 0 30px 0;
+    font-size: 21px;
+    font-weight: 500;
+}
+
+.prev-day-footer{
+    margin: 30px 0 30px 0;
+    font-size: 21px;
+    font-weight: 500;
+}
+
+.heder-row{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.red-mark{
+   color: red;
+}
+
+.green-mark{
+   color: green;
+}
+
+.message{
+    background-color: #fbc4ab;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.no-records{
+    font-size: 24px;
+    margin-left: 40%;
+
+}
+
+
+/* ************************************************************************************** */

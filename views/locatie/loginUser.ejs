@@ -2,17 +2,17 @@
 
     <form action="/locatie/user/login" method="POST" novalidate class="validated-form">
         <div class="card col-lg-3 offset-lg-4" style="width: 26rem; padding:8px 8px 8px 8px; margin-top: 200px;">
-            <h3 class="text-center">Log In</h3>
+            <h3 class="text-center">Login</h3>
             <div class="">
-                <label for="locatie" class="form-label">Utilizator</label>
+                <label for="locatie" class="form-label">User</label>
                 <input type="text" class="form-control" name="user[username]" id="locatie" aria-describedby="locatie"
                     required>
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Parolă</label>
+                <label for="password" class="form-label">Password</label>
                 <input type="password" name="user[parola]" class="form-control" id="password" required>
             </div>
-            <button type="submit" class="btn btn-success">Intră</button>
-            <a href="/locatie/user/register" class="btn btn-primary mt-2">Register</a>
+            <button type="submit" class="btn color1">Login</button>
+            <a href="/locatie/user/register" class="btn color mt-2">Sing Up</a>
         </div>
     </form>

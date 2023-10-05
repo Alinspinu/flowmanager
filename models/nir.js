@@ -73,20 +73,19 @@ const nirSchema = new Schema({
   ],
 });
 
-nirSchema.pre("save", function (next) {
-  const doc = this;
-  Counter.findOneAndUpdate(
-    { model: "Nir", locatie: doc.locatie },
-    { $inc: { value: 1 } },
-    { upsert: true, new: true },
-    function (error, counter) {
-      if (error) {
-        return next(error);
-      }
-      doc.index = counter.value;
-      next();
-    }
-  );
+nirSchema.pre("save", async function (next) {
+  try {
+    const doc = this;
+    const counter = await Counter.findOneAndUpdate(
+      { model: "Nir", locatie: doc.locatie },
+      { $inc: { value: 1 } },
+      { upsert: true, new: true }
+    );
+    doc.index = counter.value;
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = mongoose.model("Nir", nirSchema);

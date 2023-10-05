@@ -6,19 +6,13 @@ const Locatie = require("./locatie");
 const notaSchema = new Schema({
   produse: [
     {
-      nume: {
-        type: String,
-        required: true,
+      produs:
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Produs'
       },
-      pret: {
-        type: Number,
-        required: true,
-      },
-      cantitate: {
-        type: Number,
-        required: true,
-      },
-    },
+      cantitate: Number
+    }
   ],
   user: {
     nume: {
@@ -46,6 +40,10 @@ const notaSchema = new Schema({
     type: Number,
     default: 0,
   },
+  unregistred: {
+    type: Boolean,
+    default: false
+  },
   card: {
     type: Number,
     default: 0,
@@ -60,20 +58,20 @@ const notaSchema = new Schema({
   },
 });
 
-notaSchema.pre("save", function (next) {
-  const doc = this;
-  Counter.findOneAndUpdate(
-    { model: "Nota", locatie: doc.locatie },
-    { $inc: { value: 1 } },
-    { upsert: true, new: true },
-    function (error, counter) {
-      if (error) {
-        return next(error);
-      }
-      doc.index = counter.value;
-      next();
-    }
-  );
+notaSchema.pre("save", async function (next) {
+  try {
+    const doc = this;
+    const counter = await Counter.findOneAndUpdate(
+      { model: "Nota", locatie: doc.locatie },
+      { $inc: { value: 1 } },
+      { upsert: true, new: true }
+    ).exec();
+
+    doc.index = counter.value;
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = mongoose.model("Nota", notaSchema);

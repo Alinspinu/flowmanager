@@ -30,24 +30,42 @@
 
     <main class="cont m-0">
 
-        <div class="row-total">
+        <div class="row row-total">
             <div class="raport-wrapper">
-                <div class="x">
-                    <span style="font-size:20px; margin-left:3px;">raport</span>
+                <div class="nav-buts x">
+                    <span style="font-size:20px; margin-left:3px;">report</span>
                     <span style="font-size:30px;">X</span>
                 </div>
-                <div class="z">
-                    <span style="font-size:20px; margin-left:3px;">raport</span>
+                <div class=" nav-buts z">
+                    <span style="font-size:20px; margin-left:3px;">report</span>
                     <span style="font-size:30px;">Z</span>
                 </div>
 
-                <div class="fact">
-                    <a href="/rapoarte/factura" style="text-decoration: none; color:black">
+                <div class="nav-buts fact">
+                    <a href="/recipes" style="text-decoration: none; color:black">
                         <span style="font-size:20px;"><span
-                                style="font-size:30px; margin-left: 3px;">F</span>actură</span>
+                                style="font-size:30px; margin-left: 3px;">R</span>ecipes</span>
                     </a>
                 </div>
-                <div class="nav-metoda" style="background-color: transparent; box-shadow: none; margin-left: auto;">
+                <div id="back-office" class="nav-buts">
+                    <a href="rapoarte/dashboard" style="text-decoration: none; color:black">
+                        <span style="font-size:20px;"><span
+                                style="font-size:30px; margin-left: 3px;">B</span>ack<span style="font-size:30px; margin-left: 3px;">O</span>ffice</span>
+                       
+                    </a>
+                </div>
+                <div class="nav-total ms-5" style="background-color: transparent; box-shadow: none; font-size: 20px;">
+                    M
+                    <span class="marfa" style="font-size:20px;"></span>
+                </div>
+                <div class="nav-total" style="background-color: transparent; box-shadow: none;font-size: 20px;">
+                    P
+                    <span class="prep" style="font-size:20px;"></span>
+                </div>
+                <div class="unreg-wrapper" style="margin: 0 10px 0 auto;">
+                    <span class="unregistred"></span>
+                </div>
+                <div class="nav-metoda" style="background-color: transparent; box-shadow: none;">
                     <i class="bi bi-cash"></i>
                     <span class="nav-cash" style="font-size:30px;"></span>
                 </div>
@@ -55,64 +73,66 @@
                     <i class="bi bi-credit-card"></i>
                     <span class="nav-card" style="font-size:30px;"></span>
                 </div>
-                <div class="nav-total" style="background-color: transparent; box-shadow: none;">
+                <div class="nav-total me-4" style="background-color: transparent; box-shadow: none;">
                     <i class="bi bi-house-fill"></i>
                     <span class="card-cash" style="font-size:30px;"></span>
                 </div>
-
-                <span class="addSuma me-5" style="font-size:30px; color:green;"></span>
-
+                <% if(result.sum < 0) {%>
+                    <span class="addSuma me-5" style="font-size:30px; color:red;"> <%=result.sum%></span>
+                    <% } else if( result.sum === 0) {%>
+                        <% } else {%>
+                            <span class="addSuma me-5" style="font-size:30px; color:green;"> +<%=result.sum%></span>
+                            <% } %>
                 <li class="nav-item dropdown center me-5" style="list-style: none;">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-display="static"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-person fs-2"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
-                        <%if(session.userAdmin===3) {%>
-                            <li><a class="dropdown-item" href="/comanda/istoricBuc">Istoric Comenzi</a>
+                        <!-- <%if(session.userAdmin===3) {%>
+                            <li><a class="dropdown-item" href="/comanda/istoricBuc">Order History</a>
                             </li>
                             <hr class="dropdown-divider">
                             <% } %>
                                 <%if(session.userAdmin===2) {%>
-                                    <li><a class="dropdown-item" href="/comanda/istoricBarista">Istoric Comenzi</a>
+                                    <li><a class="dropdown-item" href="/comanda/istoricBarista">Order History</a>
                                     </li>
                                     <hr class="dropdown-divider">
                                     <% } %>
                                         <%if(session.userAdmin==0) {%>
-                                            <li><a class="dropdown-item" href="/rapoarte/casier">Istoric Note</a>
+                                            <li><a class="dropdown-item" href="/rapoarte/casier">Bill History</a>
                                             </li>
                                             <hr class="dropdown-divider">
                                             <% } %>
                                                 <% if(session.userAdmin===1){ %>
-                                                    <li><a href="/ingredient/stoc" class="dropdown-item">Admin</a></li>
+                                                    <li><a href="/rapoarte/rap" class="dropdown-item">Admin</a></li>
                                                     <hr class="dropdown-divider">
-                                                    <li><a class="dropdown-item" href="/locatie/show">Utilizatori</a>
+                                                    <li><a class="dropdown-item" href="/locatie/show">Users</a>
                                                         <hr class="dropdown-divider">
                                                     </li>
 
-                                                    <% } %>
-                                                        <li><a class="dropdown-item" href="">Cont</a></li>
-                                                        <hr class="dropdown-divider">
+                                                    <% } %> -->
+                                                        <!-- <li><a class="dropdown-item" href="">Account</a></li> -->
+                                                        <!-- <hr class="dropdown-divider"> -->
                                                         <li><a class="dropdown-item"
-                                                                href="/locatie/users/logout">Schimbă
-                                                                Utilizator</a></li>
+                                                                href="/locatie/users/logout">Switch User</a></li>
                                                         <li>
                                                             <hr class="dropdown-divider">
                                                         </li>
-                                                        <li><a class="dropdown-item" href="/locatie/logout">Ieșire
-                                                                Locație</a>
+                                                        <li><a class="dropdown-item" href="/locatie/logout">Logout
+                                                                Place</a>
                                                         </li>
                     </ul>
                 </li>
 
 
 
-                <button type="button" class="btn-lg btn btn-info me-2 add" data-bs-toggle="modal"
+                <button type="button" class="btn-lg btn me-2 add" data-bs-toggle="modal"
                     data-bs-target="#adaugaModal">
                     +
                 </button>
 
-                <button type="button" class="btn-lg btn btn-info red me-5" data-bs-toggle="modal"
+                <button type="button" class="btn-lg btn red me-5" data-bs-toggle="modal"
                     data-bs-target="#scoateModal">
                     -
                 </button>
@@ -125,7 +145,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <div class="total-modal-row">
-                                <span>Adauga numerar în casă:</span>
+                                <span>Add cash in drower:"</span>
 
                             </div>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -140,8 +160,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-lg btn-info" id="addCasa"
-                                data-bs-dismiss="modal">Adauga</button>
+                            <button type="button" class="btn btn-lg" id="addCasa"
+                                data-bs-dismiss="modal">Add</button>
                         </div>
                     </div>
                 </div>
@@ -152,7 +172,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <div class="total-modal-row">
-                                <span>Scoate numerar din casă:</span>
+                                <span>Substract cash from drower:</span>
 
                             </div>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -168,42 +188,54 @@
                         </div>
                         <div class="modal-footer">
 
-                            <button type="button" class="btn btn-lg btn-info" id="redCasa"
-                                data-bs-dismiss="modal">Scoate</button>
+                            <button type="button" class="btn btn-lg" id="redCasa"
+                                data-bs-dismiss="modal">Substract</button>
                         </div>
                     </div>
                 </div>
             </div>
 
         </div>
-        <div class="row m-0 contix">
-            <div class="cont col-lg-6" id="search">
-                <div class="row" id="testRow">
+        <div class="row  contix">
+            <div class="col-6" id="search">
+                <div class="wrapper">
+                    <div class="search-input">
+                        <input type="search" id="cauta" placeholder="Search Product..." class="src-input">
+                        <div class="icon">
+                            <i class="bi bi-x-lg search-close"></i>
+                            <i class="bi bi-search search-icon" id="search-button"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row search-result">
+                       
+                </div>
+                <div class="row testRow">
 
                 </div>
             </div>
 
-            <div class="col-lg-6 wrapNota">
+            <div class="col-6 wrapNota">
                 <div class="row header mb-4">
-                    <span class="col-lg-5">Produs</span>
-                    <span class="col-lg-3">Pret</span>
-                    <span class="col-lg-4">Cantitate</span>
+                    <span class="col-5">Product</span>
+                    <span class="col-3">Price</span>
+                    <span class="col-4">Quantity</span>
                 </div>
                 <div class="bill">
 
                 </div>
                 <div class="row reducere mx-0">
-                    <span class="col-lg-7 mt-3">Reducere</span>
-                    <input type="text" class="col-lg-2 redImp mt-2">
-                    <span class="col-lg-1 mt-3">lei</span>
+                    <span class="col-7 mt-3">Discount</span>
+                    <input type="text" class="col-2 redImp mt-2">
+                    <span class="col-1 mt-3">lei</span>
                 </div>
 
                 <div class="row total mx-0">
-                    <span class="col-lg-5">TOTAL</span>
-                    <span class="col-lg-3" id="total"></span>
-                    <button type="button" class="col-lg-2 btn-lg btn btn-info nto mt-2" data-bs-toggle="modal"
+                    <span class="col-5">TOTAL</span>
+                    <span class="col-3" id="total"></span>
+                    <button type="button" class="col-2 btn-lg btn  nto mt-2" data-bs-toggle="modal"
                         data-bs-target="#notaModal" style="font-size:34px;">
-                        Notă
+                        Bill
                     </button>
 
                     <div class="modal fade" id="notaModal" tabindex="-1" aria-labelledby="notaModalLabel"
@@ -223,7 +255,7 @@
                                     <div class="modal-body">
                                         <div class="plata">
                                             <div class="cash-modal-wraper mb-3">
-                                                <span class="btn btn-info cash mb-2">Numerar</span>
+                                                <span class="btn btn-info cash mb-2">Cash</span>
                                                 <input type="text" name="cash" id="cash">
                                             </div>
                                             <div class="card-modal-wraper my-3">
@@ -238,10 +270,10 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <!-- <input type="checkbox" name="bon" id="bon"> -->
-                                    <label for="nrMasa">Numar Masa</label>
-                                    <input type="number" name="nrMasa" id="nrMasa">
-                                    <button type="button" class="btn btn-lg btn-info nota" data-bs-dismiss="modal"
+                                    <input type="checkbox" name="bon" id="bon">
+                                    <!-- <label for="nrMasa">Numar Masa</label> -->
+                                        <!-- <input type="number" name="nrMasa" id="nrMasa"> -->
+                                        <button type="button" class="btn btn-lg btn-info nota" data-bs-dismiss="modal"
                                         style="font-size:40px;">Notă</button>
                                 </div>
                             </div>
@@ -266,5 +298,3 @@
 </body>
 
 </html>
-
-<!-- <script src="/javascripts/butoane.js"></script> -->

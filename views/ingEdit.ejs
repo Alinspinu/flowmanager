@@ -1,34 +1,59 @@
 <% layout('layouts/boilerplate') %>
+
+<style>
+    #delIcon{
+        margin-left: 92%;
+        font-size: 25px;
+        color: red;
+        cursor: pointer;
+    }
+</style>
     <div class="container-fluid mt-5">
-        <h1 class="text-center">Modifica Ingredient</h1>
+
         <div class="row">
-            <div class="col-lg-6 offset-lg-3">
+        <div class="card col-lg-6 offset-lg-4" style="width: 28rem; padding:8px 8px 8px 8px; margin-top: 20px; border: none;">
+            <form action="/ingredient/modifica/<%=ing._id%>?_method=DELETE" method="POST" id="delForm">
+                <i class="bi bi-trash3" id="delIcon"></i>
+            </form>
+        <h4 class="text-center">Edit Ingredient</h4>
+          
                 <form action="/ingredient/modifica/<%=ing._id%>?_method=PUT" method="POST" novalidate
                     class="validated-form">
-                    <label class="fs-5" for="nume">Denumire</label>
+                    <label class="fs-5" for="nume">Name</label>
                     <div class="input-group mb-3">
                         <input type="text" name="produs[nume]" id="nume" class="form-control"
-                            placeholder="Denumire Produs" aria-describedby="basic-addon1" value="<%=ing.nume%>"
+                             aria-describedby="basic-addon1" value="<%=ing.nume%>"
                             required>
                     </div>
                     <label class="fs-5" for="um">UM</label>
                     <div class="input-group mb-3">
                         <input type="text" name="produs[um]" id="um" class="form-control"
-                            placeholder="Unitate de masură" aria-describedby="basic-addon1" value="<%=ing.um%>"
+                             aria-describedby="basic-addon1" value="<%=ing.um%>"
                             required>
                     </div>
-                    <label class="fs-5" for="pret">Preț</label>
+                    <label class="fs-5" for="pret">Price</label>
                     <div class="input-group mb-3">
                         <input type="text" name="produs[pret]" id="pret" class="form-control" placeholder="Pret"
                             aria-describedby="basic-addon1" value="<%=ing.pret%>" required>
                     </div>
-                    <button class="btn btn-lg btn-info">Modifică</button>
-                </form>
-                <form action="/ingredient/modifica/<%=ing._id%>?_method=DELETE" method="POST">
-                    <button class="btn btn-lg btn-danger mt-4">Sterge</button>
+
+                       <div class="d-grid gap-2">
+                        <button class="btn color">
+                            <i class="bi bi-pencil-square"></i>
+                           Edit
+                        </button>
+                        </div>
                 </form>
             </div>
-
+            </div>
             
-        </div>
+       
     </div>
+
+    <script>
+        const form = document.getElementById('delForm')
+        const button = document.getElementById('delIcon')
+        button.addEventListener('click', (e)=> {
+            form.submit()
+        })
+    </script>

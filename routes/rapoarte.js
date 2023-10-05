@@ -4,8 +4,8 @@ const rap = require('../controlers/rapoarte')
 const catchAsync = require('../utilities/catchasync')
 const { isAdmin, isLoggedIn, isCasier } = require('../middleware')
 
-router.route('/rap')
-    .get(isLoggedIn, isAdmin, rap.renderRapoarte)
+
+router.route('/dashboard').get(rap.renderDashboard)
 
 router.route('/api')
     .get(catchAsync(rap.api))
@@ -14,8 +14,12 @@ router.route('/api')
 router.route('/apiNota')
     .post(catchAsync(rap.apiNota))
 
-router.route('/apiTotal')
-    .get(catchAsync(rap.apiTotal))
+router.route('/apiTotalRefresh').get(catchAsync(rap.refreshTotal))
+
+router.route('/entry')
+    .post(rap.addEntry)
+    .get(rap.sendEntry)
+    .delete(rap.deleteEntry)
 
 router.route('/factura')
     .get(isLoggedIn, isCasier, catchAsync(rap.renderFacturaForm))

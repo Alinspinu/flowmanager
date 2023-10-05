@@ -4,7 +4,6 @@ if (process.env.NODE_ENV !== "production") {
 const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-const ExpressError = require("./utilities/expressError");
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -12,9 +11,8 @@ const app = express();
 const ejsMate = require("ejs-mate");
 const MongoDbStore = require("connect-mongo");
 const methodOverride = require("method-override");
-const Produs = require("./models/produs");
 const Locatie = require("./models/locatie");
-const localStorage = require("local-storage");
+const Suma = require('./models/suma')
 const bodyParser = require("body-parser");
 const flash = require("connect-flash");
 const apiRoutes = require("./routes/api");
@@ -23,26 +21,56 @@ const addIng = require("./routes/ingredient");
 const rapoarte = require("./routes/rapoarte");
 const locatie = require("./routes/locatie");
 const comanda = require("./routes/comanda");
-const helmet = require('helmet')
+const recipe = require("./routes/recipe")
+const helmet = require('helmet');
+const helmetConfig = require('./config/helmet')
+const createCashRegisterDay = require('./utilities/createDay')
 
 const { isAdmin, isLoggedIn, isUser, isCasier } = require("./middleware");
 
+
 mongoose.set("strictQuery", false);
 
-const dbUrl = process.env.MONGO_URL_AZURE
+const dbCloudUrl = process.env.MONGO_URL_AZURE
+const dbLocalUrl = process.env.LOCAL_DB
 
-mongoose.connect(dbUrl, {
+mongoose.connect(dbCloudUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   serverSelectionTimeoutMS: 60000,
   keepAlive: true,
   maxIdleTimeMS: 60000,
-  socketTimeoutMS: 60000
+  socketTimeoutMS: 6000
+}).then(() => {
+  console.log('Conected to Mongo Cloud')
+}).catch((error) => {
+  console.log('Error connecting Mongo Db Cloud', error)
+  connectToLocalMongo()
+})
 
-});
+function connectToLocalMongo() {
+  return mongoose.connect(dbLocalUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 60000,
+    keepAlive: true,
+    maxIdleTimeMS: 60000,
+    socketTimeoutMS: 6000
+  }).then(() => {
+    console.log('Conected to Mongo Local')
+  }).catch((error) => {
+    console.log('Error connecting Mongo Local retry in 3 seconds', error)
+    setTimeout(connectToLocalMongo, 3000)
+  })
+}
 
 const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
+db.on("error", (error) => {
+  console.log("Connection Error:", error)
+  if (error) {
+    connectToLocalMongo()
+  }
+});
 db.once("open", () => {
   console.log("Database connected");
 });
@@ -58,7 +86,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const sessionConfig = {
   store: MongoDbStore.create({
-    mongoUrl: dbUrl,
+    mongoUrl: dbLocalUrl,
     autoRemove: "interval",
     autoRemoveInterval: 10,
   }),
@@ -72,6 +100,8 @@ const sessionConfig = {
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
 };
+
+
 app.use(flash());
 app.use(session(sessionConfig));
 app.use(passport.initialize());
@@ -93,67 +123,7 @@ app.use((req, res, next) => {
   next();
 });
 
-
-
-const scriptSrcUrls = [
-  "https://stackpath.bootstrapcdn.com/",
-  "https://kit.fontawesome.com/",
-  "https://cdnjs.cloudflare.com/",
-  "https://cdn.jsdelivr.net",
-  "https://code.jquery.com",
-];
-const styleSrcUrls = [
-  "https://kit-free.fontawesome.com/",
-  "https://stackpath.bootstrapcdn.com/",
-  "https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css",
-  "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css",
-  "https://kit-free.fontawesome.com/",
-  "https://fonts.googleapis.com/",
-  "https://use.fontawesome.com/",
-];
-const fontSrcUrls = [
-  "https://fonts.googleapis.com/",
-  "https://fonts.gstatic.com",
-  "https://cdn.jsdelivr.net",
-];
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: [],
-      mediaSrc: ["https://res.cloudinary.com/"],
-      connectSrc: [
-        "http://localhost:3000/",
-        "https://www.flowmanager.ro"
-      ],
-      formAction: ["'self'", "https://checkout.stripe.com"],
-      scriptSrcAttr: ["'unsafe-inline'"],
-      scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
-      styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
-      workerSrc: ["'self'", "blob:"],
-      frameSrc: [
-        "'self'",
-        "blob:",
-        "data:",
-        "https://www.youtube.com",
-        "https://js.stripe.com",
-        "https://www.facebook.com",
-      ],
-      objectSrc: [],
-      imgSrc: [
-        "'self'",
-        "blob:",
-        "data:",
-        "https://res.cloudinary.com/dhetxk68c/",
-        "https://images.unsplash.com/",
-        "https://q.stripe.com",
-      ],
-      fontSrc: ["'self'", ...fontSrcUrls],
-    },
-  })
-);
-
-
-
+app.use(helmet.contentSecurityPolicy(helmetConfig));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'https://www.flowmanager.ro');
@@ -167,9 +137,18 @@ app.use("/ingredient", addIng);
 app.use("/rapoarte", rapoarte);
 app.use("/locatie", locatie);
 app.use("/comanda", comanda);
+app.use("/recipes", recipe)
 
-app.get("/vanzare", isLoggedIn, isCasier, (req, res, next) => {
-  res.render("vanzare");
+const bcrypt = require('bcrypt')
+
+app.get("/vanzare", isLoggedIn, async (req, res, next) => {
+  const result = await Suma.findOne({ locatie: req.user })
+  createCashRegisterDay(req.user)
+  // const password = 'miau'
+  // const pass = req.user.passowrd
+  // const passwordMatch = await bcrypt.compare(password, pass)
+  // console.log(passwordMatch)
+  res.render("vanzare", { result });
 });
 
 app.get("/", async (req, res, next) => {
@@ -178,12 +157,23 @@ app.get("/", async (req, res, next) => {
 
 
 
-
-
 // app.get('/locatie/register', async (req, res, next) => {
-//   const pass = 'true'
-//   const locatie = new Locatie({ username: 'true', platitorTva: })
+//   const pass = ''
+//   const locatie = new Locatie({ username: '', platitorTva: false })
 //   const registredLocatie = await Locatie.register(locatie, pass)
+//   const suma = new Suma({ locatie: locatie._id })
+//   const cashRegister = new Register({ locatie: locatie._id })
+//   const counter = new Counter({
+//     model: 'Bon',
+//     locatie: locatie._id
+//   })
+//   const counter1 = new Counter({
+//     model: 'Entry',
+//     locatie: locatie._id
+//   })
+//   await suma.save()
+//   await counter.save()
+//   await counter1.save()
 //   req.login(registredLocatie, err => {
 //     if (err) return next(err);
 //   })
@@ -194,7 +184,7 @@ app.get("/", async (req, res, next) => {
 // const Counter = require("./models/counter");
 // app.get("/addCounter", async (req, res, next) => {
 //   const counter = new Counter({
-//     model: "Bon",
+//     model: "Entry",
 //     locatie: req.user._id,
 //   });
 //   await counter.save();
@@ -211,6 +201,16 @@ app.get("/", async (req, res, next) => {
 //   await gst.save()
 //   res.send(gst)
 // })
+
+// app.get('/suma/add', async (req, res, next) => {
+//   const suma = new Suma({
+//     locatie: req.user
+//   })
+//   await suma.save()
+//   res.send(suma)
+// })
+
+
 
 app.get('/error', async (req, res, next) => {
   const errorMessage = req.query.message

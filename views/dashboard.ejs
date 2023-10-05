@@ -1,0 +1,825 @@
+<% layout('layouts/boilerplate') %>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <% if(session.userAdmin === 1){%>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="products-tab" data-bs-toggle="tab" data-bs-target="#products-tab-pane" type="button" role="tab" aria-controls="products-tab-pane" aria-selected="true">Products</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="stock-tab" data-bs-toggle="tab" data-bs-target="#stock-tab-pane" type="button" role="tab" aria-controls="stock-tab-pane" aria-selected="false">Live Stock</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="bill-tab" data-bs-toggle="tab" data-bs-target="#bill-tab-pane" type="button" role="tab" aria-controls="bill-tab-pane" aria-selected="false">Fiscal Bills</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-tab-pane" type="button" role="tab" aria-controls="register-tab-pane" aria-selected="false">Cash Register</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="suplier-tab" data-bs-toggle="tab" data-bs-target="#suplier-tab-pane" type="button" role="tab" aria-controls="suplier-tab-pane" aria-selected="false">Add Suplier</button>
+    </li>
+    <% if(!session.passport.user.platitorTva) {%>  
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="nirFaraTva-tab" data-bs-toggle="tab" data-bs-target="#nirFaraTva-tab-pane" type="button" role="tab" aria-controls="nirFaraTva-tab-pane" aria-selected="false">Add Nir</button>
+        </li>
+        <% } else if (session.passport.user.platitorTva){ %>      
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="nir-tab" data-bs-toggle="tab" data-bs-target="#nir-tab-pane" type="button" role="tab" aria-controls="nir-tab-pane" aria-selected="false">Add Nir</button>
+            </li>
+          <% } %>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="transfer-tab" data-bs-toggle="tab" data-bs-target="#transfer-tab-pane" type="button" role="tab" aria-controls="transfer-tab-pane" aria-selected="false">Transfer</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="cat-tab" data-bs-toggle="tab" data-bs-target="#cat-tab-pane" type="button" role="tab" aria-controls="cat-tab-pane" aria-selected="false">Add Product Category</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="product-tab" data-bs-toggle="tab" data-bs-target="#product-tab-pane" type="button" role="tab" aria-controls="product-tab-pane" aria-selected="false">Add Product</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="users-tab" data-bs-toggle="tab" data-bs-target="#users-tab-pane" type="button" role="tab" aria-controls="users-tab-pane" aria-selected="false">Manage Users</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" href="/vanzare" aria-selected="false">Front</a>
+    </li>
+    <% } else { %>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="bill-tab" data-bs-toggle="tab" data-bs-target="#bill-tab-pane" type="button" role="tab" aria-controls="bill-tab-pane" aria-selected="false">Fiscal Bills</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" href="/vanzare" aria-selected="false">Front</a>
+          </li>
+        <% } %>
+</ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane" id="products-tab-pane" role="tabpanel" aria-labelledby="products-tab" tabindex="0">
+        <div class="row">
+            <div class="col-lg-6">
+                <h4 class="text-center mt-4">Products</h4>
+                <div class="wrap">
+                    <div class="nomenclator-search">
+                        <input type="text" id="cauta" placeholder="Search Product...">
+                        <div class="nomenclator">
+                            <% produse.forEach(function(el){ %>
+                                <li><a href='/produs/modifica/<%=el._id%>'>
+                                    <div class="card bg-transparent" style="max-width: 100%; border: none;">
+                                        <div class="row g-0">
+                                          <div class="col-md-2">
+                                            <img src="<%=el.imagine.path%>" class="img-fluid rounded-start" style="height: 60px">
+                                          </div>
+                                          <div class="col-md-10">
+                                            <div class="card-body">
+                                              <h5 class="card-title"><%=el.nume%></h5>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </a></li>
+                                <% }) %>
+                        </div>
+                        <div class="icon"><i class="bi bi-search"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 ">
+                <h4 class="text-center mt-4">Ingredients</h4>
+                <div class="wrap">
+                    <div class="nomenclator-search">
+                        <input type="text" id="cauta1" placeholder="Search Ingredient...">
+                        <div class="nomenclator1">
+    
+                            <% ings.forEach(function(el){ %>
+                                <li><a href='/ingredient/modifica/<%=el._id%>'>
+                                        <%=el.nume%> | <%=el.cantitate%>
+                                                <%=el.um%> | Gestiune: <%=el.gestiune.nume%>
+                                    </a></li>
+                                <% }) %>
+                        </div>
+                        <div class="icon"><i class="bi bi-search"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane" id="stock-tab-pane" role="tabpanel" aria-labelledby="stock-tab" tabindex="0">
+        <h3 class="text-center mt-4">Stoc Live</h3>
+        <div class="wrapper col-lg-8 offset-lg-2">
+        <div class="search-input">
+            <input type="text" id="cauta2" placeholder="Search Product..." class="src-input">
+            <div class="icons">
+                <i class="bi bi-x-lg search-close1"></i>
+                <i class="bi bi-search search-icon" id="search-button1"></i>
+            </div>
+        </div>
+        </div>
+        <table class="col-lg-8 offset-lg-2 mt-2 stoc">
+            <tr>
+                <th>&nbsp;&nbsp;Name</th>
+                <th>UM</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Lei</th>
+            </tr> 
+            <% ings.forEach(function(el) {%>
+                <tr class="stoc-line">
+                    <td>
+                        &nbsp;&nbsp;<%=el.nume%>
+                    </td>
+                    <td>
+                        <%=el.um%>
+                    </td>
+                    <td>
+                        <%=Math.round(el.pret * 100) / 100%>
+                    </td>
+                    <td>
+                        <%=Math.round(el.cantitate * 1000) / 1000%>
+                    </td>
+                    <td>
+                        <%=Math.round((el.pret*el.cantitate) * 1000) / 1000%>
+                    </td>
+                </tr>
+                <% }) %>
+                    <tr class="all">
+                        <td>&nbsp;&nbsp;TOTAL</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <%=ings.reduce((acc, item)=> acc + Math.round(((item.pret*item.cantitate)*100)/100), 0)%>
+                        </td>
+                    </tr>
+        </table>
+    
+    </div>
+    <div class="tab-pane" id="bill-tab-pane" role="tabpanel" aria-labelledby="bill-tab" tabindex="0">
+        <div class="row">
+            <div class="col-4 offset-8">
+                <div class="row">
+                    <div class="nav-metoda col" style="background-color: transparent; box-shadow: none;">
+                        <i class="bi bi-cash"></i>
+                        <span class="nav-cash" style="font-size:30px;"></span>
+                    </div>
+                    <div class="nav-metoda col" style="background-color: transparent; box-shadow: none;">
+                        <i class="bi bi-credit-card"></i>
+                        <span class="nav-card" style="font-size:30px;"></span>
+                    </div>
+                    <div class="nav-total col" style="background-color: transparent; box-shadow: none;">
+                        <i class="bi bi-house-fill"></i>
+                        <span class="card-cash" style="font-size:30px;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h3 class="text-center mb-3">Fiscal Bill Documents</h3>
+            <div class="col-lg-8 offset-lg-2 filterHeaderWrapper">
+              <div class="row">
+                <div class="col-lg-3 filterHeader">
+                  <label for="">From</label>
+                  <input type="date" name="Start" id="start" class="">
+                </div>
+                <div class="col-lg-3 filterHeader">
+                  <label class="" for="end">To</label>
+                  <input clas="form-control" type="date" name="End" id="end">
+                </div>
+                <div class="col-lg-2 filterHeader">
+                  <label class="" for="users">Users</label>
+                  <select class="form-select form-select-sm" id="users" aria-label=".form-select-sm example">
+                    <option value="1" selected>Toți</option>
+                    <%users.forEach(function(el){%>
+                      <option value="<%=el._id%>">
+                        <%=el.nume%>
+                      </option>
+                      <% }) %>
+                  </select>
+                </div>
+                <div class="col-lg-4 filterHeader btnWrap">
+                  <button class="btn  btn-sm color mt-4" id="fiscal-bill">Fiscal Bill</button>
+                  <button class="btn btn-sm color mt-4" id="produse">Products</button>
+                  <button type="button" class="btn-sm btn mt-4 color hide rpModal" data-bs-toggle="modal"
+                  data-bs-target="#reprintModal">
+                  Reprint
+              </button>
+                </div>
+              </div>
+            </div>
+        </div>
+        
+        <div class="modal fade" id="reprintModal" tabindex="1" aria-labelledby="reprintModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="total-modal-row">
+                            <span>Are you shore you wanna reprint this fiscal bill?</span>
+
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-lg" id="reprint"
+                            data-bs-dismiss="modal">Reprint</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <table class="col-lg-8 offset-lg-2 mt-4 hide bonTable">
+              <tr class="text-center header">
+                <th class="hide">id</th>
+                <th>Nr</th>
+                <th>User</th>
+                <th>Data</th>
+                <th>Card</th>
+                <th>Cash</th>
+                <th>Total</th>
+              </tr>
+        </div>
+        
+        <div class="row">
+            </table>
+            <table class="col-lg-8 offset-lg-2 mt-4 hide prodTable">
+              <tr class="text-center header">
+                <th>Produs</th>
+                <th>Qty</th>
+                <th>Price</th>
+              </tr>
+            </table>
+        </div>
+    </div>
+    <div class="tab-pane" id="register-tab-pane" role="tabpanel" aria-labelledby="register-tab" tabindex="0">
+        <div class="row">
+            <div class="card col-md-3" style="padding:8px 8px 8px 8px; margin-top: 50px;">
+                <form action="/rapoarte/entry" method="POST" class="validated-form" novalidate>
+                    <h4 class="text-center mt-2">Add Entry</h4>
+
+                    <select class="form-select" name="entry[tip]" id="" aria-label="Default select example"
+                    required>
+                    <option value="">Type of entry</option>
+                        <option value='income'>Income</option>
+                        <option value='expense'>Expense</option>
+                     </select>
+
+                     <span class="label my-2">Date</span>
+                     <input type="date" class="form-control" name="entry[date]" id="entry-date" aria-describedby="basic-addon1" required>
+                     
+                     <span class="label my-2">Description</span>
+                    <textarea type="text" name="entry[description]" id="" class="form-control" 
+                        aria-describedby="basic-addon1" required></textarea>
+    
+                    <span class="label my-1">Sum</span>
+                    <input type="number" name="entry[amount]" id="" class="form-control" 
+                        aria-describedby="basic-addon1" required>
+                     <div class="d-grid gap-2">
+                        <button class="btn my-1 addIngBtn" style="background-color: #e0d4c9;">
+                            <i class="bi bi-plus-square"></i>
+                            Add
+                        </button>
+                     </div>
+                  
+                </form>
+                </div>
+
+            <div class="card col-md-9" style="padding:8px 8px 8px 8px; margin-top: 50px;">
+                <div class="row px-2">
+                    <div class="col prev">
+                        <i class="bi bi-arrow-left-square" id="prevBtn"></i>
+                    </div>
+                    <ul class="nav nav-tabs col-10" id="dayTab" role="tablist">
+                 
+                    </ul>
+                    <div class="col next">
+                        <i class="bi bi-arrow-right-square" id="nextBtn"></i>
+                    </div>
+                    <div class="tab-content" id="dayTabContent">
+                        
+                    </div>  
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="tab-pane" id="suplier-tab-pane" role="tabpanel" aria-labelledby="suplier-tab" tabindex="0">
+        <div class="row">
+            <form action="/ingredient/addFurnizor" method="POST" novalidate class="validated-form">
+                <div class="card col-lg-6 offset-lg-4" style="width: 28rem; padding:8px 8px 8px 8px; margin-top: 50px;">
+                    <h4 class="text-center mt-2">Add Suplier</h4>
+                    <span class="label my-2">Name</span>
+                    <input type="text" name="furnizor[nume]" id="numeF" class="form-control" 
+                        aria-describedby="basic-addon1" required>
+    
+                    <span class="label my-1">VAT Nr</span>
+                    <input type="text" name="furnizor[cif]" id="cif" class="form-control" 
+                        aria-describedby="basic-addon1" required>
+    
+    
+                    <span class="label my-1">Registration Number</span>
+                    <input type="text" name="furnizor[rc]" id="rc" class="form-control" 
+                        aria-describedby="basic-addon1" required>
+    
+                    <span class="label my-1">Bank account</span>
+                    <input type="text" name="furnizor[cont]" id="cont" class="form-control"
+                        aria-describedby="basic-addon1" required>
+    
+                    <span class="label my-1">Bank</span>
+                    <input type="text" name="furnizor[banca]" id="banca" class="form-control"
+                        aria-describedby="basic-addon1" required>
+    
+                    <span class="label my-1">Adress</span>
+                    <textarea type="text" name="furnizor[adresa]" id="adresa" class="form-control"
+                        aria-describedby="basic-addon1"></textarea>
+    
+                    <button class="btn my-1 addIngBtn" style="background-color: #e0d4c9;">
+                        <i class="bi bi-plus-square"></i>
+                        Add
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <% if(session.passport.user.platitorTva) {%>  
+        <div class="tab-pane" id="nir-tab-pane" role="tabpanel" aria-labelledby="nir-tab" tabindex="0">
+            <div class="row">
+                <div class="card col-md-3 mt-2" style="padding:8px 8px 8px 8px;">
+                    <h5 class="fs-5 text-center mb-4">Adaugă Produs în NIR</h5>
+                    <label for="prodNume" class="form-label">Nume</label>
+                    <input type="text" name="nir[produs][nume]" id="prodNume" class="form-control" placeholder=""
+                        aria-describedby="basic-addon1" required>
+                    <div class="search-res" id="prodNirSearch">
+                    </div>
+                    <label for="prorUm" class="form-label">Um</label>
+                    <input type="text" name="nir[produs][um]" id="prodUm" class="form-control" placeholder=""
+                        aria-describedby="basic-addon1" required>
+                    <label for="prodCant" class="form-label">Cantitate</label>
+                    <input type="number" name="nir[produs][cantitate]" id="prodCant" class="form-control" placeholder=""
+                        aria-describedby="basic-addon1" required>
+                    <label for="prodPretIn" class="form-label">Pret/UM/Fara TVA</label>
+                    <input type="number" name="nir[produs][pretUmInt]" id="prodPretIn" class="form-control" placeholder=""
+                        aria-describedby="basic-addon1" required>
+                    <label for="prodPretIn" class="form-label">Valoare</label>
+                    <input type="number" name="nir[produs][valoareInt]" id="prodValIn" class="form-control" placeholder=""
+                        aria-describedby="basic-addon1" required>
+                    <label for="cotaTva" class="form-label">Cota TVA %</label>
+                    <input type="number" name="nir[produs][cotaTva]" id="cotaTva" class="form-control" placeholder=""
+                        aria-describedby="basic-addon1" required>
+                    <label for="valTva" class="form-label">Valoare Tva</label>
+                    <input type="number" name="nir[produs][valTva]" id="valTva" class="form-control" placeholder=""
+                        aria-describedby="basic-addon1" required>
+                    <label for="prodTotal" class="form-label">Total</label>
+                    <input type="number" name="nir[produs][total]" id="prodTotal" class="form-control" placeholder=""
+                        aria-describedby="basic-addon1" required>
+                    <select class="form-select my-1" name="produs[categorie]" id="prodCat" aria-label="Default select example"
+                        placeholder="" required>
+                        <option value=''>Alege departament</option>
+                        <option value='Marfa'>Marfa</option>
+                        <option value='Materie Prima'>Materie Prima</option>
+                        <option value='Consumabil'>Consumabile</option>
+                    </select>
+                    <select class="form-select" name="produs[gestiune]" id="prodGestiune" aria-label="Default select example"
+                        required>
+                        <option value="">Alege Gestiunea care primește</option>
+                        <%for(let i=0; i<gestiune.length; i++) {%>
+                            <option value='<%=gestiune[i]._id%>'>
+                                <%=gestiune[i].nume%>
+                            </option>
+                            <% } %>
+                    </select>
+                    <label for="prodPretIn" class="form-label">Pret Vanzare</label>
+                    <input type="number" name="nir[produs][pretVanzareUm]" id="prodPrtVnz" class="form-control" placeholder=""
+                        aria-describedby="basic-addon1">
+        
+                    <div class="d-grid gap-2">
+                        <a class="btn" style="background-color: #e0d4c9;" id="addPrd">Add+</a>
+                    </div>
+                </div>
+                <div class="card col-md-9 mt-2" style="padding:8px 8px 8px 8px;">
+                    <form action="/ingredient/addIngredient" method="POST" novalidate class="validated-form">
+                        <div class="row mt-4 furHeader text-center">
+                            <span class="col-3">Nume</span>
+                            <span class="col-3">CIF</span>
+                            <span class="col-3">Nr Document</span>
+                            <span class="col-3">Data</span>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="nir[furnizor]" id="furnizor" class="form-control" placeholder="Furnizor"
+                                aria-describedby="basic-addon1" required>
+                            <input type="text" name="nir[cif]" id="cifNir" class="form-control" placeholder="CIF"
+                                aria-describedby="basic-addon1" required>
+                            <input type="text" name="nir[furId]" id="furId" class="form-control hide" placeholder="CIF"
+                                aria-describedby="basic-addon1" required>
+                            <input type="text" name="nir[nrDoc]" id="nrDoc" class="form-control" placeholder="Numar Factura"
+                                aria-describedby="basic-addon1" required>
+                            <input type="date" name="nir[data]" id="data" class="form-control data" value=""
+                                aria-describedby="basic-addon1" required>
+                        </div>
+                        <div class="search-res" id="searchFur">
+                        </div>
+                        <div class="row nirHeader hide text-center" style="font-size:12px ;">
+                            <span class="col ms-5">Nume</span>
+                            <span class="col ms-3">UM</span>
+                            <span class="col">Qty</span>
+                            <span class="col">Pret F Tva</span>
+                            <span class="col">Valoare</span>
+                            <span class="col">Cota Tva%</span>
+                            <span class="col">Valoare Tva</span>
+                            <span class="col me-3">Total</span>
+                            <span class="col">Tip</span>
+                            <span class="col me-4">Gestiune</span>
+                            <span class="col">Pret Vânz</span>
+                        </div>
+                        <div class="row totaluri hide">
+                            <span class="col-1" style="margin:0 0 0 309px; font-weight: 500;">Total:</span>
+                            <span class="col-1" id="tVal"></span>
+                            <span class="" style="width:66px;"></span>
+                            <span class="col-1" id="tTva"></span>
+                            <span class="col-1" id="Tot"></span>
+                        </div>
+                        <div class="row">
+                            <div class="d-grid gap-2">
+                                <button class="btn hide" style="background-color: #e0d4c9;" id="saveNir">Salvează
+                                    NIR</button>
+                            </div>
+                        </div>
+        
+                    </form>
+        
+                </div>
+            </div>
+        </div>
+    
+    <% } else if (!session.passport.user.platitorTva){ %>      
+        <div class="tab-pane" id="nirFaraTva-tab-pane" role="tabpanel" aria-labelledby="nirFaraTva-tab" tabindex="0">
+            <h4 class="my-3 text-center">Add goods from suplyer to warehouse (NIR)</h4>
+            <div class="row">
+
+                <div class="card col-md-3 mt-2" style="padding:8px 8px 8px 8px;">
+                    <h5 class="fs-5 text-center mb-4">Add product în NIR</h5>
+                    <label for="prodNume" class="form-label">Name</label>
+                    <input type="text" name="nir[produs][nume]" id="prodNume" class="form-control" placeholder=""
+                        aria-describedby="basic-addon1" required>
+                    <div class="search-res" id="FprodNirSearch">
+                    </div>
+                    <label for="prorUm" class="form-label">Um</label>
+                    <input type="text" name="nir[produs][um]" id="prodUm" class="form-control" placeholder=""
+                        aria-describedby="basic-addon1" required>
+                    <label for="prodCant" class="form-label">Quantity</label>
+                    <input type="number" name="nir[produs][cantitate]" id="prodCant" class="form-control" placeholder=""
+                        aria-describedby="basic-addon1" required>
+                    <label for="prodPretIn" class="form-label">Price</label>
+                    <input type="number" name="nir[produs][pret]" id="prodPretIn" class="form-control" placeholder=""
+                        aria-describedby="basic-addon1" required>
+                    <label for="prodTotal" class="form-label">Total</label>
+                    <input type="number" name="nir[produs][total]" id="prodTotal" class="form-control" placeholder=""
+                        aria-describedby="basic-addon1" required>
+                    <select class="form-select my-1" name="produs[categorie]" id="prodCat" aria-label="Default select example"
+                        placeholder="" required>
+                        <option value=''>Choose Departament</option>
+                        <option value='Marfa'>Goods</option>
+                        <option value='Materie Prima'>Row Material</option>
+                        <option value='Consumabil'>Suplies</option>
+                    </select>
+                    <select class="form-select" name="produs[gestiune]" id="prodGestiune" aria-label="Default select example"
+                        required>
+                        <option value="">Alege Gestiunea care primește</option>
+                        <%for(let i=0; i<gestiune.length; i++) {%>
+                            <option value='<%=gestiune[i]._id%>'>
+                                <%=gestiune[i].nume%>
+                            </option>
+                            <% } %>
+                    </select>
+                    <label for="prodPretIn" class="form-label">Pret Vanzare</label>
+                    <input type="number" name="nir[produs][pretVanzareUm]" id="prodPrtVnz" class="form-control mb-1"
+                        placeholder="" aria-describedby="basic-addon1">
+                    <div class="d-grid gap-2">
+                        <a class="btn" style="background-color: #e0d4c9;" id="addPrdF">Add+</a>
+                    </div>
+                </div>
+                <div class="card col-md-9 mt-2" style="padding:8px 8px 8px 8px;">
+                    <form action="/ingredient/addIngFaraTva" method="POST" novalidate class="validated-form">
+                        <div class="row mt-4 furHeader text-center">
+                            <span class="col-3">Nume</span>
+                            <span class="col-3">CIF</span>
+                            <span class="col-3">Nr Document</span>
+                            <span class="col-3">Data</span>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="nir[furnizor]" id="furnizor" class="form-control" placeholder="Furnizor"
+                                aria-describedby="basic-addon1" required>
+                            <input type="text" name="nir[cif]" id="cifNir" class="form-control" placeholder="CIF"
+                                aria-describedby="basic-addon1" required>
+                            <input type="text" name="nir[furId]" id="furId" class="form-control hide" placeholder="CIF"
+                                aria-describedby="basic-addon1" required>
+                            <input type="text" name="nir[nrDoc]" id="nrDoc" class="form-control" placeholder="Numar Factura"
+                                aria-describedby="basic-addon1" required>
+                            <input type="date" name="nir[data]" id="data" class="form-control Fdata" value=""
+                                aria-describedby="basic-addon1" required>
+                        </div>
+                        <div class="search-res" id="FsearchFur">
+                        </div>
+                        <div class="row nirHeader hide text-center" style="font-size:12px ;">
+                            <span class="col ms-5">Nume</span>
+                            <span class="col ms-3">UM</span>
+                            <span class="col">Qty</span>
+                            <span class="col">Pret</span>
+                            <span class="col me-3">Total</span>
+                            <span class="col">Tip</span>
+                            <span class="col me-4">Gestiune</span>
+                            <span class="col">Pret Vânz</span>
+                        </div>
+                        <div class="row totaluri hide">
+                            <span class="col-1" style="margin:0 0 0 421px; font-weight: 500;">Total:</span>
+                            <span class="col-1" id="Tot"></span>
+                        </div>
+                        <div class="row">
+                            <div class="d-grid gap-2">
+                                <button class="btn hide" style="background-color: #e0d4c9;" id="FsaveNir">Salvează
+                                    NIR</button>
+                            </div>
+                        </div>
+        
+                    </form>
+        
+                </div>
+            </div>
+        </div>
+    <% } %>
+    <div class="tab-pane" id="transfer-tab-pane" role="tabpanel" aria-labelledby="transfer-tab" tabindex="0">
+        <h4 class=" text-center my-4">Transfer între gestiuni
+        </h4>
+    
+        <div class="row">
+            <div class="card col-md-3 mt-2" style="padding:8px 8px 8px 8px;">
+                <h5 class=" text-center mb-2">Adaugă produs în bon
+                </h5>
+                <input type="text" id="cauta3" name="ingredient[nume]" class="form-control" placeholder="Caută...">
+                <div class="search-res" id="searchIngGst">
+    
+                </div>
+                <input type="text" name="ingredient[um]" readonly="true" id="um1" class="form-control my-1" placeholder="UM"
+                    aria-describedby="basic-addon1" required>
+                <input type="number" name="ingredient[pret]" id="pret1" class="form-control my-1  " placeholder="Pret"
+                    aria-describedby="basic-addon1" readonly="true" required>
+                <input type="number" name="ingredient[qty]" id="cant1" class="form-control my-1" placeholder="Cantitate">
+                <div class="d-grid gap-2">
+                    <a class="btn" style="background-color: #e0d4c9;" id="addBonTransfer">Adaugă în bon +</a>
+                </div>
+            </div>
+            <div class="card col-md-9 mt-2" style="padding:8px 8px 8px 8px;">
+    
+                <form action="/ingredient/addInv?_method=PUT" method="POST" novalidate class="validated-form">
+                    <div class="input-group search mb-3">
+                        <select class="form-select" name="bon[gestSend]" id="gestSend" aria-label="Default select example"
+                            placeholder="Alege departament" required>
+                            <option value="">Alege Gestiunea din care se transferă</option>
+                            <%for(let i=0; i<gestiune.length; i++) {%>
+                                <option value='<%=gestiune[i]._id%>'>
+                                    <%=gestiune[i].nume%>
+                                </option>
+                                <% } %>
+                        </select>
+                        <select class="form-select" name="bon[gestRecive]" id="gestRecive"
+                            aria-label="Default select example" placeholder="Alege departament" required>
+                            <option value="">Alege Gestiunea care primește</option>
+                            <%for(let i=0; i<gestiune.length; i++) {%>
+                                <option value='<%=gestiune[i]._id%>'>
+                                    <%=gestiune[i].nume%>
+                                </option>
+                                <% } %>
+                        </select>
+                        <input type="date" name="bon[data]" class="form-control data" id="dataTr" value=""
+                            aria-describedby="basic-addon1" required>
+                    </div>
+    
+                    <div class="row text-center mb-3 hide bonTransfer">
+                        <span class="col">Nume</span>
+                        <span class="col">UM</span>
+                        <span class="col">Pret</span>
+                        <span class="col">Cantitate</span>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-2 offset-7">
+                            <div class="input-group valWrapp hide">
+                                <label style="font-size:22px;" for="valoare">Total</label>
+                                <input type="text" id="valoare" name="bon[valoare]" style="border:none;"
+                                    class="form-control bg-transparent right-align" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                    </div>
+    
+    
+                    <div class="d-grid gap-2">
+                        <button class="btn hide" style="background-color: #e0d4c9;" id="btnAddBon">Salvează
+                            Bon</button>
+                    </div>
+    
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane" id="cat-tab-pane" role="tabpanel" aria-labelledby="cat-tab" tabindex="0">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div style="padding: 12px; margin-top: 40px;">
+                <h4 class=" text-center mt-4">Add Product Category</h4>
+                <form action="/produs/addMainCat" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+                    <div class="input-group mb-4">
+                        <input type="text" name="mainCat[nume]" class="form-control"
+                            placeholder="Main Category Name" required>
+                            <label for="fileInput" class="file-label">
+                                <i class="bi bi-plus-square"></i>
+                                Add Image 
+                                <input type="file" name="imagine" id="fileInput" class="file-input">
+                            </label>
+                        <button class="btn" style="background-color: #e0d4c9;" type="submit">Add Main Category</button>
+                    </div>
+                </form>
+                <form action="/produs/addCat" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <select class="form-select" name="categorie[mainCat]" id="gestRecive"
+                        aria-label="Default select example" required>
+                        <option value="">Choose Main Category</option>
+                        <% mainCat.forEach((el)=>{%>
+                            <option value="<%=el._id%>">
+                                <%=el.nume%>
+                            </option>
+                            <% }) %>
+                        </select>
+                        <input type="text" name="categorie[nume]" class="form-control"
+                            placeholder="Secondary Category Name" required>
+                            <label for="fileInput" class="file-label">
+                                <i class="bi bi-plus-square"></i>
+                                Add Image 
+                                <input type="file" name="imagine" id="fileInput" class="file-input">
+                            </label>
+                        <button class="btn btn-sm" style="background-color: #e0d4c9;" type="submit">Add Secondary Category</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="tab-pane" id="product-tab-pane" role="tabpanel" aria-labelledby="product-tab" tabindex="0">
+        <h4 class="text-center my-4">Adaugă Produs în Meniu</h4>
+
+    <div class="row">
+        <div class="card col-md-3 mt-2" style="padding:8px 8px 8px 8px;">
+            <h5 class="text-center">Adaugă Ingredient</h5>
+            <input type="text" id="cauta" name="ingredient[nume]" class="form-control srcs" placeholder="Caută ing...">
+            <div class="search-res" id="searchReteta">
+            </div>
+            <input type="text" name="ingredient[um]" readonly="true" id="um" class="form-control my-1" placeholder="UM"
+                aria-describedby="basic-addon1" required>
+            <input type="number" name="ingredient[pret]" id="pretIng" class="form-control my-1" placeholder="Pret"
+                aria-describedby="basic-addon1" readonly="true" required>
+            <input type="number" name="ingredient[qty]" id="cant" class="form-control my-1" placeholder="Cantitate">
+            <div class="d-grid gap-2">
+                <a class="btn" style="background-color: #e0d4c9;" id="addIng">Adaugă în Rețetă</a>
+            </div>
+        </div>
+        <div class="card col-md-8 mt-2" style="padding:8px 8px 8px 8px;">
+            <form action="/produs/addProdus" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+                <div class="input-group mb-3">
+                    <input type="text" name="produs[nume]" id="nume" class="form-control" placeholder="Denumire Produs"
+                        aria-describedby="basic-addon1" required>
+                    <input type="number" name="produs[pret]" id="pret" class="form-control" placeholder="Pret"
+                        aria-describedby="basic-addon1" required>
+                    <select class="form-select" name="produs[departament]" id="departament"
+                        aria-label="Default select example" required>
+                        <option value="" selected>Alege Departament</option>
+                        <option value="1">Marfuri</option>
+                        <option value="2">Preparate</option>
+                        <option value="3">Servicii</option>
+                        <option value="4">Tips</option>
+                    </select>
+                    <% if(session.passport.user.platitorTva){%>
+                        <select class="form-select" name="produs[cotaTva]" id="departament"
+                            aria-label="Default select example" required>
+                            <option value="" selected>Alege Cota TVA</option>
+                            <option value="19">19%</option>
+                            <option value="9">9%</option>
+                            <option value="5">5%</option>
+                        </select>
+                        <% } %>
+                            <select class="form-select" name="produs[categorie]" id="categorie"
+                                aria-label="Default select example" placeholder="Alege departament" required>
+                                <option value="" selected>Alege Categorie</option>
+                                <% for(let i=0; i<cats.length; i++) {%>
+                                    <option value='<%=cats[i]._id%>'>
+                                        <%=cats[i].nume%>
+                                    </option>
+                                    <% } %>
+                            </select>
+                            <label for="fileInput" class="file-label">
+                                <i class="bi bi-plus-square"></i>
+                                Add Image 
+                                <input type="file" name="imagine" id="fileInput" class="file-input">
+                            </label>
+
+                </div>
+
+                <div class="row text-center hide reteta">
+                    <span class="col">Rețetă</span>
+                    <span class="col">Qty</span>
+                    <span class="col">Lei</span>
+                </div>
+                <div class="row">
+                    <span class="totReteta hide col-lg-4 offset-lg-8 mt-2"></span>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button class="btn hide" role="submit" style="background-color: #e0d4c9;" id="addProdusBtn">Adaugă Produs</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<div class="tab-pane" id="users-tab-pane" role="tabpanel" aria-labelledby="users-tab" tabindex="0">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 px-0">
+                    <div class="card mt-5" style="width: 26rem; padding:8px 8px 8px 8px;">
+                        <h3 class="text-center mt-4">Utilizatori <%=locatie.username%>
+                        </h3>
+                        <ul class="list-group list-group-flush">
+                            <% users.forEach(function(el, i){%>
+                                <li class="list-group-item">
+                                    <a class="link" href="/locatie/user/<%=el.username%>">
+                                        <%=i+1%>.&nbsp; <%=String(el.nume).charAt(0).toUpperCase() +
+                                                String(el.nume).slice(1)%>
+                                                &nbsp;| <%=el.functie%>
+                                    </a>
+                                </li>
+                                <% }) %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-6">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 px-0">
+                    <div class="card mt-5" style="width: 26rem; padding:8px 8px 8px 8px;">
+                        <h3 class="text-center mt-4">Adaugă/Modifică datele firmei</h3>
+                        <form action="/locatie/addFirma" method="POST">
+
+                            <div class="mt-2">
+                                <label for="nume" class="form-label">Denumire Societate</label>
+                                <input type="text" class="form-control" name="firma[nume]" id="nume"
+                                    aria-describedby="locatie" value="" placeholder="">
+                            </div>
+                            <div class="">
+                                <label for="cif" class="form-label">CIF</label>
+                                <input type="text" name="firma[cif]" class="form-control" id="cif" placeholder="">
+                            </div>
+                            <div class="">
+                                <label for="rc" class="form-label">Nr Registrul Comerțului</label>
+                                <input type="text" name="firma[rc]" class="form-control" id="rc">
+                            </div>
+                            <div class="">
+                                <label for="banca" class="form-label">Banca</label>
+                                <input type="text" name="firma[banca][nume]" class="form-control" id="banca">
+                            </div>
+                            <div class="">
+                                <label for="cont" class="form-label">Cont</label>
+                                <input type="text" name="firma[banca][cont]" class="form-control" id="cont">
+                            </div>
+                            <div class="">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="text" name="firma[email]" class="form-control" id="email">
+                            </div>
+                            <div class="">
+                                <label for="telefon" class="form-label">Telefon</label>
+                                <input type="text" name="firma[telefon]" class="form-control" id="telefon">
+                            </div>
+                            <div class="">
+                                <label for="adresa" class="form-label">Adresa Sediu Social</label>
+                                <textarea type="text" name="firma[adresa]" class="form-control" id="adresa"></textarea>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn my-2"style="background-color: #e0d4c9;">Adauga</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+  
+
+
+
+
+
+
+
+
+<script src="/javascripts/dashboard.js"></script>
