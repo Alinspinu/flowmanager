@@ -46,6 +46,8 @@ const navCard = document.querySelector(".nav-card");
 const marfa = document.querySelector(".marfa");
 const prep = document.querySelector(".prep");
 const unregistred = document.querySelector('.unregistred'); 
+const cashButton = document.querySelector('.nav-buts-1');
+const hideWrapper = document.querySelector('.hide-wrapper')
 
 
 fetch(urlRefresh).then((res) =>
@@ -61,10 +63,14 @@ fetch(urlRefresh).then((res) =>
     prep.innerText = round2(prepValue);
     navCard.innerText = round2(card);
     navCash.innerText = round2(cash);
-    navTot.innerText = round2(card + cash);
+    navTot.innerText = round2(card + cash + unregValue);
     unregValue === 0 ? unregistred.classList.add('hide') : ''
   })
 );
+
+cashButton.addEventListener('click', function(){
+    hideWrapper.classList.toggle('hide')
+})
 
 let products = []
 
@@ -472,7 +478,7 @@ nota.addEventListener("click", (e) => {
           prep.innerText = round2(prepValue);
           navCard.innerText = round2(card);
           navCash.innerText = round2(cash);
-          navTot.innerText = round2(card + cash);
+          navTot.innerText = round2(card + cash + unregValue);
         })
       }
     })
