@@ -218,7 +218,8 @@ function createCalendarTabs() {
 
 function clickHandler(button, wrapper) {
     fetch(`${baseUrlLocal}rapoarte/entry?data=${button.innerText}`).then((res) => res.json().then((data) => {
-        if (!data.regDay) {
+        console.log(data)
+        if (data.regDay === null) {
             const template = document.createElement('div');
             template.classList.add('no-records')
             template.innerText = 'No Records!'
@@ -704,7 +705,7 @@ if (addRowPrdBtnT) {
     addRowPrdBtnT.onclick = (e) => {
         rowCount++;
         const nirHeader = document.querySelector(".nirHeader");
-        const prodNume = document.querySelector("#prodNume");
+        const prodNumeTva = document.querySelector("#prodNumeTva");
         const prodUm = document.querySelector("#prodUm");
         const prodCant = document.querySelector("#prodCant");
         const prodCat = document.querySelector("#prodCat");
@@ -726,7 +727,7 @@ if (addRowPrdBtnT) {
         prodRow.classList.add("input-group");
         const prodRowHtml = `
       <div class="input-group ing">
-        <input type="text" style="width: 100px;" name="nir[produse][${rowCount}][nume]"  class="form-control"  aria-describedby="basic-addon1" value='${prodNume.value
+        <input type="text" style="width: 100px;" name="nir[produse][${rowCount}][nume]"  class="form-control"  aria-describedby="basic-addon1" value='${prodNumeTva.value
             }' required>
         <input type="text" name="nir[produse][${rowCount}][um]" class="form-control" aria-describedby="basic-addon1" value='${prodUm.value
             }' required>
@@ -796,7 +797,7 @@ if (addRowPrdBtnT) {
             totalTva.innerText = round(tTva);
             totalNir.innerText = round(tVal + tTva);
         };
-        prodNume.value = "";
+        prodNumeTva.value = "";
         prodUm.value = "";
         prodCant.value = "";
         prodPretIn.value = "";
@@ -810,69 +811,70 @@ if (addRowPrdBtnT) {
 
 //Furnizor NIR Search
 
-const furnImput = document.querySelector("#furnizor");
-
-furnImput.onkeyup = (e) => {
-    const search = e.target.value;
-    if (search) {
-        fetch(furUrllocal, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ search }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.length) {
-                    let emptyArray = [];
-                    let nume = [];
-                    let cif = [];
-                    let Id = [];
-                    data.forEach((el) => {
-                        nume.push(el.nume);
-                        cif.push(el.cif);
-                        Id.push(el.Id);
-                    });
-                    let furNumeUm = nume.map((val, index) => ({
-                        nume: val,
-                        cif: cif[index],
-                        Id: Id[index],
-                    }));
-                    emptyArray = furNumeUm.map((furnizori) => {
-                        return (furnizori =
-                            '<li class="result">' +
-                            "<span>" +
-                            furnizori.nume +
-                            "</span>" +
-                            "&nbsp;&nbsp;" +
-                            "<span>" +
-                            furnizori.cif +
-                            "</span>" +
-                            "<span class=hide>" +
-                            furnizori.Id +
-                            "</span>" +
-                            "</li>");
-                    });
-                    if (suggBoxFurnizor.classList[2] == "hide") {
-                        suggBoxFurnizor.classList.remove("hide");
+const furnImputTva = document.querySelector("#furnizorTva");
+if(furnImputTva){
+    furnImputTva.onkeyup = (e) => {
+        const search = e.target.value;
+        if (search) {
+            fetch(furUrllocal, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ search }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.length) {
+                        let emptyArray = [];
+                        let nume = [];
+                        let cif = [];
+                        let Id = [];
+                        data.forEach((el) => {
+                            nume.push(el.nume);
+                            cif.push(el.cif);
+                            Id.push(el.Id);
+                        });
+                        let furNumeUm = nume.map((val, index) => ({
+                            nume: val,
+                            cif: cif[index],
+                            Id: Id[index],
+                        }));
+                        emptyArray = furNumeUm.map((furnizori) => {
+                            return (furnizori =
+                                '<li class="result">' +
+                                "<span>" +
+                                furnizori.nume +
+                                "</span>" +
+                                "&nbsp;&nbsp;" +
+                                "<span>" +
+                                furnizori.cif +
+                                "</span>" +
+                                "<span class=hide>" +
+                                furnizori.Id +
+                                "</span>" +
+                                "</li>");
+                        });
+                        if (suggBoxFurnizor.classList[2] == "hide") {
+                            suggBoxFurnizor.classList.remove("hide");
+                        }
+                        suggBoxFurnizor.classList.add("active");
+                        showSugestionsFurnizorTva(emptyArray);
+                        const allList = suggBoxFurnizor.querySelectorAll("li");
+                        for (let i = 0; i < allList.length; i++) {
+                            allList[i].setAttribute("onclick", "selectFurnizorTva(this)");
+                        }
+                    } else {
+                        suggBoxFurnizor.classList.add("hide");
                     }
-                    suggBoxFurnizor.classList.add("active");
-                    showSugestionsFurnizor(emptyArray);
-                    const allList = suggBoxFurnizor.querySelectorAll("li");
-                    for (let i = 0; i < allList.length; i++) {
-                        allList[i].setAttribute("onclick", "selectFurnizor(this)");
-                    }
-                } else {
-                    suggBoxFurnizor.classList.add("hide");
-                }
-            });
-    } else {
-        suggBoxFurnizor.classList.add("hide");
-    }
-};
+                });
+        } else {
+            suggBoxFurnizor.classList.add("hide");
+        }
+    };
+}
 
-function showSugestionsFurnizor(list) {
+function showSugestionsFurnizorTva(list) {
     let listData;
     if (!list.length) {
         userValue = furnImput.value;
@@ -883,7 +885,7 @@ function showSugestionsFurnizor(list) {
     suggBoxFurnizor.innerHTML = listData;
 }
 
-function selectFurnizor(element) {
+function selectFurnizorTva(element) {
     const cifNir = document.querySelector("#cifNir");
     const furId = document.querySelector("#furId");
     const nrDoc = document.querySelector("#nrDoc");
@@ -891,7 +893,7 @@ function selectFurnizor(element) {
     let cif = element.children[1].innerText;
     let id = element.children[2].innerText;
     furId.value = id;
-    furnImput.value = selectUserData;
+    furnImputTva.value = selectUserData;
     cifNir.value = cif;
     nrDoc.focus();
     suggBoxFurnizor.classList.toggle("hide");
@@ -935,82 +937,85 @@ if (valTva) {
 }
 
 //Produs NIR Search
-const prodImput = document.querySelector("#prodNume");
+const prodImputTva = document.querySelector("#prodNumeTva");
 
-prodImput.onkeyup = (e) => {
-    const search = e.target.value;
-    if (search) {
-        fetch(ingUrllocal, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ search }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                let emptyArray = [];
-                let nume = [];
-                let um = [];
-                let cotaTva = [];
-                let pret = [];
-                data.forEach((el) => {
-                    nume.push(el.nume);
-                    um.push(el.um);
-                    cotaTva.push(el.cotaTva);
-                    pret.push(el.pret);
+// console.log(prodImputTva)
+if(prodImputTva){
+    prodImputTva.onkeyup = (e) => {
+        const search = e.target.value;
+        if (search) {
+            fetch(ingUrllocal, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ search }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    let emptyArray = [];
+                    let nume = [];
+                    let um = [];
+                    let cotaTva = [];
+                    let pret = [];
+                    data.forEach((el) => {
+                        nume.push(el.nume);
+                        um.push(el.um);
+                        cotaTva.push(el.cotaTva);
+                        pret.push(el.pret);
+                    });
+                    let prodNumeUm = nume.map((val, index) => ({
+                        nume: val,
+                        um: um[index],
+                        cotaTva: cotaTva[index],
+                        pret: pret[index],
+                    }));
+                    emptyArray = prodNumeUm.map((produse) => {
+                        return (produse =
+                            '<li class="result">' +
+                            "<span>" +
+                            produse.nume +
+                            "</span>" +
+                            "&nbsp;&nbsp;" +
+                            "<span>" +
+                            produse.um +
+                            "&nbsp;&nbsp;" +
+                            "</span>" +
+                            "<span>" +
+                            produse.cotaTva +
+                            " % &nbsp;&nbsp;" +
+                            "</span>" +
+                            "<span>" +
+                            produse.pret +
+                            "</span>" +
+                            "</li>");
+                    });
+                    if (suggBoxNirProd.classList[2] == "hide") {
+                        suggBoxNirProd.classList.remove("hide");
+                    }
+                    suggBoxNirProd.classList.add("active");
+                    showSugestionsNirProd(emptyArray);
+                    const allList = suggBoxNirProd.querySelectorAll("li");
+                    for (let i = 0; i < allList.length; i++) {
+                        allList[i].setAttribute("onclick", "selectNirProdTva(this)");
+                    }
                 });
-                let prodNumeUm = nume.map((val, index) => ({
-                    nume: val,
-                    um: um[index],
-                    cotaTva: cotaTva[index],
-                    pret: pret[index],
-                }));
-                emptyArray = prodNumeUm.map((produse) => {
-                    return (produse =
-                        '<li class="result">' +
-                        "<span>" +
-                        produse.nume +
-                        "</span>" +
-                        "&nbsp;&nbsp;" +
-                        "<span>" +
-                        produse.um +
-                        "&nbsp;&nbsp;" +
-                        "</span>" +
-                        "<span>" +
-                        produse.cotaTva +
-                        " % &nbsp;&nbsp;" +
-                        "</span>" +
-                        "<span>" +
-                        produse.pret +
-                        "</span>" +
-                        "</li>");
-                });
-                if (suggBoxNirProd.classList[2] == "hide") {
-                    suggBoxNirProd.classList.remove("hide");
-                }
-                suggBoxNirProd.classList.add("active");
-                showSugestionsNirProd(emptyArray);
-                const allList = suggBoxNirProd.querySelectorAll("li");
-                for (let i = 0; i < allList.length; i++) {
-                    allList[i].setAttribute("onclick", "selectNirProd(this)");
-                }
-            });
-    } else {
-        suggBoxFurnizor.classList.add("hide");
-    }
-};
-
-prodImput.addEventListener("keydown", (e) => {
-    if (e.keyCode === 9) {
-        suggBoxNirProd.classList.add("hide");
-    }
-});
+        } else {
+            suggBoxFurnizor.classList.add("hide");
+        }
+    };
+    
+    prodImputTva.addEventListener("keydown", (e) => {
+        if (e.keyCode === 9) {
+            suggBoxNirProd.classList.add("hide");
+        }
+    });
+}
 
 function showSugestionsNirProd(list) {
     let listData;
     if (!list.length) {
-        userValue = prodImput.value;
+        userValue = prodImputTva.value;
         listData = "<li>" + userValue + "</li>";
     } else {
         listData = list.join("");
@@ -1018,7 +1023,7 @@ function showSugestionsNirProd(list) {
     suggBoxNirProd.innerHTML = listData;
 }
 
-function selectNirProd(element) {
+function selectNirProdTva(element) {
     const cotaTva = document.querySelector("#cotaTva");
     const um = document.querySelector("#prodUm");
     const pret = document.querySelector("#prodPretIn");
@@ -1027,7 +1032,7 @@ function selectNirProd(element) {
     let valUm = element.children[1].innerText;
     let valCotaTva = element.children[2].innerText;
     let valPret = element.children[3].innerText;
-    prodImput.value = selectUserData;
+    prodImputTva.value = selectUserData;
     um.value = valUm;
     cotaTva.value = valCotaTva.slice(0, 1);
     pret.value = valPret;
@@ -1150,10 +1155,11 @@ if (addRowPrdBtnF) {
 }
 
 //Furnizor NIR Search
-
+const furnImput = document.querySelector("#furnizorFTva");
 
 furnImput.onkeyup = (e) => {
     const search = e.target.value;
+    console.log(search)
     if (search) {
         fetch(furUrllocal, {
             method: "POST",
@@ -1242,7 +1248,7 @@ function selectFurnizor(element) {
 
 //Produs NIR Search
 
-// const prodImput = document.querySelector("#prodNume");
+const prodImput = document.querySelector("#prodNume");
 
 prodImput.onkeyup = (e) => {
     const search = e.target.value;
@@ -1290,7 +1296,7 @@ prodImput.onkeyup = (e) => {
                     suggBoxNirProdF.classList.remove("hide");
                 }
                 suggBoxNirProdF.classList.add("active");
-                showSugestionsNirProd(emptyArray);
+                showSugestionsNirProdFtva(emptyArray);
                 const allList = suggBoxNirProdF.querySelectorAll("li");
                 for (let i = 0; i < allList.length; i++) {
                     allList[i].setAttribute("onclick", "selectNirProd(this)");
@@ -1307,7 +1313,7 @@ prodImput.addEventListener("keydown", (e) => {
     }
 });
 
-function showSugestionsNirProd(list) {
+function showSugestionsNirProdFTva(list) {
     let listData;
     if (!list.length) {
         userValue = prodImput.value;

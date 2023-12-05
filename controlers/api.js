@@ -90,9 +90,12 @@ module.exports.reciveNota = async (req, res, next) => {
     for (let nota of note) {
       totalCash += nota.cash;
     }
-    const day = await Day.findOne({ locatie: locatie, date: startOfDay }).populate({ path: 'entry' })
+    const nextDay = new Date(startOfDay);
+    nextDay.setDate(dateObject.getDate() + 1);
+    const day = await Day.findOne({ locatie: locatie, date: {$gte:startOfDay, $lt: nextDay} }).populate({ path: 'entry' })
     if (day) {
-      const entry = await Entry.findOne({ locatie: locatie, date: startOfDay, description: 'Raport Z' })
+      const entry = await Entry.findOne({ locatie: locatie, date: {$gte:startOfDay, $lt: nextDay}, description: 'Raport Z' })
+      console.log(entry)
       if (!entry) {
         const newEntry = new Entry({
           locatie: locatie,
@@ -273,6 +276,8 @@ module.exports.reciveNota = async (req, res, next) => {
     }
     if(!req.body.bon){
       fs.writeFileSync(fileName, bon.join("\n"));
+    } else {
+       
     }
 
     const note = await Nota.find({ data: { $gte: startOfDay, $lte: endOfDay }, locatie: locatie }).populate({ path: 'produse.produs' })

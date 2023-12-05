@@ -213,4 +213,5 @@ module.exports.addCat = async (req, res, next) => {
     `Felicitări ai adaugat categoria ${cat.nume} la ${mCat.nume}!`
   );
   res.redirect("/rapoarte/dashboard");
+ 
 };

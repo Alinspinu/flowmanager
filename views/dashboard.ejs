@@ -343,8 +343,8 @@
             <div class="row">
                 <div class="card col-md-3 mt-2" style="padding:8px 8px 8px 8px;">
                     <h5 class="fs-5 text-center mb-4">Adaugă Produs în NIR</h5>
-                    <label for="prodNume" class="form-label">Nume</label>
-                    <input type="text" name="nir[produs][nume]" id="prodNume" class="form-control" placeholder=""
+                    <label for="prodNumeTva" class="form-label">Nume</label>
+                    <input type="text" name="nir[produs][nume]" id="prodNumeTva" class="form-control" placeholder=""
                         aria-describedby="basic-addon1" required>
                     <div class="search-res" id="prodNirSearch">
                     </div>
@@ -374,7 +374,7 @@
                         <option value=''>Alege departament</option>
                         <option value='Marfa'>Marfa</option>
                         <option value='Materie Prima'>Materie Prima</option>
-                        <option value='Consumabil'>Consumabile</option>
+                        <option value='Consumabile'>Consumabile</option>
                     </select>
                     <select class="form-select" name="produs[gestiune]" id="prodGestiune" aria-label="Default select example"
                         required>
@@ -402,7 +402,7 @@
                             <span class="col-3">Data</span>
                         </div>
                         <div class="input-group">
-                            <input type="text" name="nir[furnizor]" id="furnizor" class="form-control" placeholder="Furnizor"
+                            <input type="text" name="nir[furnizor]" id="furnizorTva" class="form-control" placeholder="Furnizor"
                                 aria-describedby="basic-addon1" required>
                             <input type="text" name="nir[cif]" id="cifNir" class="form-control" placeholder="CIF"
                                 aria-describedby="basic-addon1" required>
@@ -504,7 +504,7 @@
                             <span class="col-3">Data</span>
                         </div>
                         <div class="input-group">
-                            <input type="text" name="nir[furnizor]" id="furnizor" class="form-control" placeholder="Furnizor"
+                            <input type="text" name="nir[furnizor]" id="furnizorFTva" class="form-control" placeholder="Furnizor"
                                 aria-describedby="basic-addon1" required>
                             <input type="text" name="nir[cif]" id="cifNir" class="form-control" placeholder="CIF"
                                 aria-describedby="basic-addon1" required>
@@ -635,7 +635,7 @@
                         <button class="btn" style="background-color: #e0d4c9;" type="submit">Add Main Category</button>
                     </div>
                 </form>
-                <form action="/produs/addCat" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+                <form action="/produs/addCat?_method=PUT" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
                     <div class="input-group">
                         <select class="form-select" name="categorie[mainCat]" id="gestRecive"
                         aria-label="Default select example" required>

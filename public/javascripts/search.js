@@ -194,8 +194,6 @@ closeSearch.onclick = () => {
 
 
 
-
-
 fetch(urlLocal)
   .then((res) => res.json())
   .then((data) => {
@@ -249,7 +247,7 @@ fetch(urlLocal)
             } else {
               imgProd.src = 'https://res.cloudinary.com/dhetxk68c/image/upload/v1682521162/gossips/glau3hwhahthvuaif9ne.png'
             }
-            imgProd.classList.add('img-fluid', 'img-card-top')
+            imgProd.classList.add('img-fluid', 'card-img')
             body.classList.add('card-body', 'text-center')
             body.style.padding = 0
             btnProdus.classList.add("btnProd", "card", "btnProds", 'col-3');
@@ -467,7 +465,6 @@ nota.addEventListener("click", (e) => {
         })
       } else {
         res.json().then((data) => {
-          console.log(data)
           const cash = data.totalCash;
           const card = data.totalCard;
           const marfaValue = data.marfa;

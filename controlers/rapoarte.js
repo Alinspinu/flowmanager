@@ -116,8 +116,10 @@ module.exports.sendEntry = async (req, res, next) => {
     dateObject.setFullYear(year);
     dateObject.setMonth(month);
     dateObject.setDate(day);
-    dateObject.setUTCHours(0, 0, 0, 0);
-    const regDay = await Day.findOne({ date: dateObject, locatie: locatie }).populate({ path: 'entry' })
+    dateObject.setUTCHours(0,0,0,0)
+    const nextDay = new Date(dateObject);
+    nextDay.setDate(dateObject.getDate() + 1);
+    const regDay = await Day.findOne({ date:{ $gte: dateObject, $lt: nextDay}, locatie: locatie }).populate({ path: 'entry' });
     res.json({ regDay })
 }
 
@@ -133,7 +135,9 @@ module.exports.addEntry = async (req, res, next) => {
         locatie: locatie,
     })
     newEntry.save()
-    const day = await Day.findOne({ date: entryDate, locatie: locatie }).populate({ path: 'entry' })
+    const nextDay = new Date(entryDate);
+    nextDay.setDate(entryDate.getDate() + 1);
+    const day = await Day.findOne({ date: { $gte: entryDate, $lt: nextDay}, locatie: locatie }).populate({ path: 'entry' })
     if (day) {
         const daySum = day.entry.reduce((total, doc) => total + doc.amount, 0)
         day.entry.push(newEntry)

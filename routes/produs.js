@@ -17,7 +17,7 @@ router
   .route("/addMainCat")
   .post(upload.single('imagine'), isLoggedIn, isAdmin, catchAsync(produs.addMainCat));
 
-router.route("/addCat").post(isLoggedIn, isAdmin, catchAsync(produs.addCat));
+router.route("/addCat").put(upload.single('imagine'), isLoggedIn, isAdmin, catchAsync(produs.addCat));
 router
   .route("/modifica/:id")
   .get(isLoggedIn, isAdmin, catchAsync(produs.renderEdit))
